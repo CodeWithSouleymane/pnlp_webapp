@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Total Donations</h6>
+                            <h2 class="mb-0">{{ stats.total_donations }}</h2>
+                        </div>
+                        <div class="icon-circle bg-white text-primary">
+                            <i class="fas fa-hand-holding-medical fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-white-50">
+                            <i class="fas fa-arrow-up me-1"></i>{{ stats.donation_increase }}% this month
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Available Blood</h6>
+                            <h2 class="mb-0">{{ stats.total_blood_ml }}ml</h2>
+                        </div>
+                        <div class="icon-circle bg-white text-success">
+                            <i class="fas fa-tint fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-white-50">Across all blood types</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Pending Requests</h6>
+                            <h2 class="mb-0">{{ stats.pending_requests }}</h2>
+                        </div>
+                        <div class="icon-circle bg-white text-warning">
+                            <i class="fas fa-clock fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{{ url_for('admin_appointments') }}" class="text-white">
+                            <i class="fas fa-arrow-right me-1"></i>View all requests
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Critical Stock</h6>
+                            <h2 class="mb-0">{{ stats.critical_types }}</h2>
+                        </div>
+                        <div class="icon-circle bg-white text-danger">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="text-white-50">Blood types below threshold</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Blood Inventory -->
+        <div class="col-xl-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Blood Inventory Status</h5>
+                        <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-external-link-alt me-1"></i>Full Inventory
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        {% for blood_type, data in inventory.items() %}
+                        <div class="col-md-3 col-sm-6">
+                            <div class="blood-type-card text-center p-3 rounded
+                                     {% if data.status == 'critical' %}bg-danger text-white
+                                     {% elif data.status == 'low' %}bg-warning
+                                     {% else %}bg-light{% endif %}">
+                                <h3 class="blood-type mb-2">{{ blood_type }}</h3>
+                                <p class="mb-1">{{ data.quantity }}ml</p>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar bg-{{ data.status }}" 
+                                         role="progressbar" 
+                                         style="width: {{ data.percentage }}%"></div>
+                                </div>
+                                <small class="text-muted">{{ data.status|title }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-xl-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for activity in recent_activity %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ activity.title }}</h6>
+                                <small class="text-muted">{{ activity.time_ago }}</small>
+                            </div>
+                            <p class="mb-1">{{ activity.description }}</p>
+                            <small class="text-muted">
+                                <i class="fas fa-user me-1"></i>{{ activity.user }}
+                            </small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donation Trends -->
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0">Donation Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="donationTrends"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Request Distribution -->
+        <div class="col-xl-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0">Blood Request Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="requestDistribution"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Donation Trends Chart
+const donationCtx = document.getElementById('donationTrends').getContext('2d');
+new Chart(donationCtx, {
+    type: 'line',
+    data: {
+        labels: {{ donation_trends.labels|tojson }},
+        datasets: [{
+            label: 'Donations',
+            data: {{ donation_trends.data|tojson }},
+            borderColor: '#0d6efd',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Request Distribution Chart
+const requestCtx = document.getElementById('requestDistribution').getContext('2d');
+new Chart(requestCtx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ request_distribution.labels|tojson }},
+        datasets: [{
+            data: {{ request_distribution.data|tojson }},
+            backgroundColor: [
+                '#0d6efd',
+                '#198754',
+                '#dc3545',
+                '#ffc107',
+                '#6610f2',
+                '#0dcaf0',
+                '#fd7e14',
+                '#20c997'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'right'
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blood-type-card {
+    border: 1px solid rgba(0,0,0,.125);
+    transition: transform 0.2s;
+}
+
+.blood-type-card:hover {
+    transform: translateY(-5px);
+}
+
+.blood-type {
+    font-size: 2rem;
+    font-weight: bold;
+}
+</style>
+{% endblock %}

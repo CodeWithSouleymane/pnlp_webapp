@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Record Donation{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Record Blood Donation</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.donor_id.label(class="form-label") }}
+                            {{ form.donor_id(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.quantity_ml.label(class="form-label") }}
+                            {{ form.quantity_ml(class="form-control") }}
+                            <div class="form-text">Standard donation is typically 450ml</div>
+                        </div>
+                        {{ form.submit(class="btn btn-primary") }}
+                        <a href="{{ url_for('donors') }}" class="btn btn-secondary">Back to Donors</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donor Information -->
+        {% if donor %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Donor Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ donor.name }}</dd>
+
+                        <dt class="col-sm-4">Blood Type</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">{{ donor.blood_type }}</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Contact</dt>
+                        <dd class="col-sm-8">{{ donor.contact }}</dd>
+
+                        <dt class="col-sm-4">Last Donation</dt>
+                        <dd class="col-sm-8">
+                            {% if donor.last_donation %}
+                                {{ donor.last_donation.strftime('%Y-%m-%-d') }}
+                                ({{ (now - donor.last_donation).days }} days ago)
+                            {% else %}
+                                No previous donations
+                            {% endif %}
+                        </dd>
+                    </dl>
+
+                    <!-- Previous Donations -->
+                    <h6 class="mt-4">Donation History</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for donation in donor.donations %}
+                                <tr>
+                                    <td>{{ donation.donation_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ donation.quantity_ml }}ml</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

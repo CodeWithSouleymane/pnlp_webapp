@@ -1,0 +1,57 @@
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.card {
+    border: none;
+    transition: transform 0.2s ease-in-out;
+    max-width: 450px;
+    margin: auto;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.form-floating > label {
+    color: #6c757d;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-1px);
+}
+
+.registration-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.registration-buttons .btn {
+    flex: 1;
+    min-width: 200px;
+}
+
+.alert {
+    margin-bottom: 1.5rem;
+}
+
+.form-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

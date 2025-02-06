@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Request Blood{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-tint me-2"></i>Request Blood
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.blood_type.label(class="form-label") }}
+                                    {{ form.blood_type(class="form-select") }}
+                                    {% if form.blood_type.errors %}
+                                        {% for error in form.blood_type.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.quantity_ml.label(class="form-label") }}
+                                    <div class="input-group">
+                                        {{ form.quantity_ml(class="form-control") }}
+                                        <span class="input-group-text">ml</span>
+                                    </div>
+                                    {% if form.quantity_ml.errors %}
+                                        {% for error in form.quantity_ml.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <small class="text-muted">Minimum: 450ml (1 unit)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                {{ form.urgency.label(class="form-label") }}
+                                {{ form.urgency(class="form-select") }}
+                                {% if form.urgency.errors %}
+                                    {% for error in form.urgency.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                {{ form.notes.label(class="form-label") }}
+                                {{ form.notes(class="form-control", rows=4, placeholder="Any additional information about the request...") }}
+                                {% if form.notes.errors %}
+                                    {% for error in form.notes.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-danger btn-lg") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Blood Availability Card -->
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Current Blood Availability</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for blood_type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="text-center">
+                                <h5>{{ blood_type }}</h5>
+                                {% set inventory = blood_inventory.get(blood_type, {'quantity_ml': 0, 'status': 'Not Available'}) %}
+                                <span class="badge bg-{{ 'success' if inventory.quantity_ml >= 1000 else 'warning' if inventory.quantity_ml >= 500 else 'danger' }}">
+                                    {{ (inventory.quantity_ml / 450)|round|int }} units
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

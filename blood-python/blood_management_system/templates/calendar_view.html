@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Appointment Calendar{% endblock %}
+
+{% block styles %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Calendar Sidebar -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-filter me-2"></i>Filters
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Appointment Type</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="donation" id="filterDonation" checked>
+                            <label class="form-check-label" for="filterDonation">
+                                Blood Donation
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="request" id="filterRequest" checked>
+                            <label class="form-check-label" for="filterRequest">
+                                Blood Request
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Pending" id="filterPending" checked>
+                            <label class="form-check-label" for="filterPending">
+                                Pending
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Approved" id="filterApproved" checked>
+                            <label class="form-check-label" for="filterApproved">
+                                Approved
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Completed" id="filterCompleted" checked>
+                            <label class="form-check-label" for="filterCompleted">
+                                Completed
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary w-100" id="applyFilters">
+                        Apply Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>Quick Stats
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Today's Appointments</h6>
+                        <h3 class="text-primary">{{ today_count }}</h3>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Pending Approval</h6>
+                        <h3 class="text-warning">{{ pending_count }}</h3>
+                    </div>
+                    <div>
+                        <h6>This Week's Total</h6>
+                        <h3 class="text-success">{{ weekly_count }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointment Details Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Appointment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <strong>Type:</strong>
+                    <span id="appointmentType"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Blood Type:</strong>
+                    <span id="bloodType"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Date & Time:</strong>
+                    <span id="dateTime"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Status:</strong>
+                    <span id="status"></span>
+                </div>
+                <div class="mb-3">
+                    <strong>Notes:</strong>
+                    <p id="notes" class="text-muted"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                {% if current_user.is_admin %}
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="statusDropdown" data-bs-toggle="dropdown">
+                        Update Status
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item status-update" href="#" data-status="Approved">Approve</a></li>
+                        <li><a class="dropdown-item status-update" href="#" data-status="Completed">Mark as Completed</a></li>
+                        <li><a class="dropdown-item status-update" href="#" data-status="Cancelled">Cancel</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: '/api/appointments',
+        eventClick: function(info) {
+            showAppointmentDetails(info.event);
+        },
+        eventContent: function(arg) {
+            return {
+                html: `
+                    <div class="fc-content">
+                        <div class="fc-title">${arg.event.title}</div>
+                        <div class="fc-time">${arg.event.extendedProps.time}</div>
+                    </div>
+                `
+            };
+        }
+    });
+    calendar.render();
+
+    // Handle filter changes
+    document.getElementById('applyFilters').addEventListener('click', function() {
+        let types = [];
+        if (document.getElementById('filterDonation').checked) types.push('donation');
+        if (document.getElementById('filterRequest').checked) types.push('request');
+        
+        let statuses = [];
+        if (document.getElementById('filterPending').checked) statuses.push('Pending');
+        if (document.getElementById('filterApproved').checked) statuses.push('Approved');
+        if (document.getElementById('filterCompleted').checked) statuses.push('Completed');
+        
+        calendar.refetchEvents();
+    });
+
+    // Handle appointment details
+    function showAppointmentDetails(event) {
+        const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+        document.getElementById('appointmentType').textContent = event.extendedProps.appointment_type;
+        document.getElementById('bloodType').textContent = event.extendedProps.blood_type;
+        document.getElementById('dateTime').textContent = `${event.start.toLocaleDateString()} ${event.extendedProps.time}`;
+        document.getElementById('status').textContent = event.extendedProps.status;
+        document.getElementById('notes').textContent = event.extendedProps.notes || 'No notes provided';
+        modal.show();
+    }
+
+    // Handle status updates
+    document.querySelectorAll('.status-update').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const status = this.dataset.status;
+            const appointmentId = currentAppointmentId;
+            
+            fetch(`/appointment/${appointmentId}/update-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    calendar.refetchEvents();
+                    bootstrap.Modal.getInstance(document.getElementById('appointmentModal')).hide();
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

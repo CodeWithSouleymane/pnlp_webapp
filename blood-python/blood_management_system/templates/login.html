@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-75">
+        <div class="col-12">
+            <div class="card shadow-lg rounded-lg mt-5">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Login</h3>
+                </div>
+                <div class="card-body p-4">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('login') }}" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+                        <div class="form-floating mb-3">
+                            {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else ""), placeholder="Username", autocomplete="username") }}
+                            {{ form.username.label }}
+                            {% if form.username.errors %}
+                                <div class="form-error">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Password", autocomplete="current-password") }}
+                            {{ form.password.label }}
+                            {% if form.password.errors %}
+                                <div class="form-error">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        {{ form.submit(class="btn btn-primary w-100 py-2 mb-3") }}
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <div class="small mb-3">Don't have an account?</div>
+                    <div class="registration-buttons">
+                        <a href="{{ url_for('register_donor') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-hand-holding-medical me-1"></i> Register as Donor
+                        </a>
+                        <a href="{{ url_for('register_patient') }}" class="btn btn-outline-danger">
+                            <i class="fas fa-user-injured me-1"></i> Register as Patient
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

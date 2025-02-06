@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Bank Reports{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Blood Bank Reports</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Overview ({{ start_date.strftime('%Y-%m-%d') }} to {{ end_date.strftime('%Y-%m-%d') }})</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Donations</h6>
+                    <p>Total Donations: {{ total_donations }}</p>
+                    <p>Total Volume: {{ total_donation_volume }} ml</p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Requests</h6>
+                    <p>Total Requests: {{ total_requests }}</p>
+                    <p>Total Volume Requested: {{ total_request_volume }} ml</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Blood Type Statistics</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Blood Type</th>
+                            <th>Donations</th>
+                            <th>Volume Donated (ml)</th>
+                            <th>Requests</th>
+                            <th>Volume Requested (ml)</th>
+                            <th>Balance (ml)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for blood_type, stats in blood_type_stats.items() %}
+                        <tr>
+                            <td>{{ blood_type }}</td>
+                            <td>{{ stats.donations }}</td>
+                            <td>{{ stats.volume }}</td>
+                            <td>{{ stats.requests }}</td>
+                            <td>{{ stats.request_volume }}</td>
+                            <td>
+                                {% set balance = stats.volume - stats.request_volume %}
+                                <span class="{% if balance < 0 %}text-danger{% else %}text-success{% endif %}">
+                                    {{ balance }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

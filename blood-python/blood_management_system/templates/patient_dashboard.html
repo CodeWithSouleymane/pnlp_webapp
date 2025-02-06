@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2 class="mb-3">Welcome, {{ patient.name }}!</h2>
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Blood Type:</strong> {{ patient.blood_type }}</p>
+                            <p><strong>Email:</strong> {{ patient.email }}</p>
+                            <p><strong>Phone:</strong> {{ patient.phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Address:</strong> {{ patient.address }}</p>
+                            <p><strong>City:</strong> {{ patient.city }}</p>
+                            <p><strong>Status:</strong> 
+                                <span class="badge bg-{{ 'success' if patient.status == 'Active' else 'warning' }}">
+                                    {{ patient.status }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Compatible Blood Types</h5>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        {% for blood_type, quantity in blood_inventory.items() %}
+                            <div class="blood-type-badge {{ 'bg-success' if quantity >= 1000 else 'bg-warning' if quantity >= 500 else 'bg-danger' }}">
+                                {{ blood_type }}
+                                <small class="d-block">{{ quantity }}ml</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Your Blood Requests</h5>
+            <a href="{{ url_for('request_blood') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>New Request
+            </a>
+        </div>
+        <div class="card-body">
+            {% if blood_requests %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Blood Type</th>
+                                <th>Quantity (ml)</th>
+                                <th>Status</th>
+                                <th>Request Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in blood_requests %}
+                            <tr>
+                                <td>#{{ request.id }}</td>
+                                <td>
+                                    <span class="blood-type-badge small">{{ request.blood_type }}</span>
+                                </td>
+                                <td>{{ request.quantity_ml }}ml</td>
+                                <td>
+                                    <span class="badge bg-{{ 'warning' if request.status == 'Pending' else 'success' if request.status == 'Completed' else 'danger' }}">
+                                        {{ request.status }}
+                                    </span>
+                                </td>
+                                <td>{{ request.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <p class="text-muted mb-0">You haven't made any blood requests yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.blood-type-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    min-width: 60px;
+}
+
+.blood-type-badge.small {
+    padding: 0.25rem 0.5rem;
+    min-width: 45px;
+    font-size: 0.875rem;
+}
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 1rem;
+}
+
+.table th {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.table td {
+    vertical-align: middle;
+}
+</style>
+{% endblock %}

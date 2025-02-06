@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Register as Donor{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Donor Registration
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('register_donor') }}" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Personal Information -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">Personal Information</h5>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Full Name *</label>
+                                    {{ form.name(class="form-control", placeholder="Enter your full name") }}
+                                    {% if form.name.errors %}
+                                        {% for error in form.name.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    {{ form.email(class="form-control", placeholder="Enter your email") }}
+                                    {% if form.email.errors %}
+                                        {% for error in form.email.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    {{ form.phone(class="form-control", placeholder="Enter your phone number") }}
+                                    {% if form.phone.errors %}
+                                        {% for error in form.phone.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date_of_birth" class="form-label">Date of Birth *</label>
+                                    {{ form.date_of_birth(class="form-control", type="date") }}
+                                    {% if form.date_of_birth.errors %}
+                                        {% for error in form.date_of_birth.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical Information -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">Medical Information</h5>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="blood_type" class="form-label">Blood Type *</label>
+                                    {{ form.blood_type(class="form-select") }}
+                                    {% if form.blood_type.errors %}
+                                        {% for error in form.blood_type.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="weight" class="form-label">Weight (kg) *</label>
+                                    {{ form.weight(class="form-control", type="number", placeholder="Enter your weight") }}
+                                    {% if form.weight.errors %}
+                                        {% for error in form.weight.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        {{ form.has_diseases(class="form-check-input") }}
+                                        <label class="form-check-label" for="has_diseases">
+                                            Do you have any chronic diseases?
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="diseases_details" style="display: none;">
+                                    <label for="diseases_details" class="form-label">Please specify your conditions</label>
+                                    {{ form.diseases_details(class="form-control", rows="3") }}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        {{ form.is_medication(class="form-check-input") }}
+                                        <label class="form-check-label" for="is_medication">
+                                            Are you currently on any medication?
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="medication_details" style="display: none;">
+                                    <label for="medication_details" class="form-label">Please specify your medications</label>
+                                    {{ form.medication_details(class="form-control", rows="3") }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">Address Information</h5>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="address" class="form-label">Street Address *</label>
+                                    {{ form.address(class="form-control", placeholder="Enter your street address") }}
+                                    {% if form.address.errors %}
+                                        {% for error in form.address.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">City *</label>
+                                    {{ form.city(class="form-control", placeholder="Enter your city") }}
+                                    {% if form.city.errors %}
+                                        {% for error in form.city.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="postal_code" class="form-label">Postal Code *</label>
+                                    {{ form.postal_code(class="form-control", placeholder="Enter your postal code") }}
+                                    {% if form.postal_code.errors %}
+                                        {% for error in form.postal_code.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">Emergency Contact</h5>
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="emergency_contact_name" class="form-label">Contact Name *</label>
+                                    {{ form.emergency_contact_name(class="form-control", placeholder="Emergency contact name") }}
+                                    {% if form.emergency_contact_name.errors %}
+                                        {% for error in form.emergency_contact_name.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="emergency_contact_phone" class="form-label">Contact Phone *</label>
+                                    {{ form.emergency_contact_phone(class="form-control", placeholder="Emergency contact phone") }}
+                                    {% if form.emergency_contact_phone.errors %}
+                                        {% for error in form.emergency_contact_phone.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label for="emergency_contact_relationship" class="form-label">Relationship *</label>
+                                    {{ form.emergency_contact_relationship(class="form-control", placeholder="Relationship to emergency contact") }}
+                                    {% if form.emergency_contact_relationship.errors %}
+                                        {% for error in form.emergency_contact_relationship.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Consent -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.consent(class="form-check-input") }}
+                                <label class="form-check-label" for="consent">
+                                    I confirm that all information provided is accurate and I consent to be a blood donor.
+                                    I understand that my information will be kept confidential and used only for blood donation purposes.
+                                </label>
+                                {% if form.consent.errors %}
+                                    {% for error in form.consent.errors %}
+                                        <div class="invalid-feedback d-block">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle diseases details
+    const hasDiseasesCheckbox = document.getElementById('has_diseases');
+    const diseasesDetails = document.getElementById('diseases_details');
+    
+    hasDiseasesCheckbox.addEventListener('change', function() {
+        diseasesDetails.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Toggle medication details
+    const isMedicationCheckbox = document.getElementById('is_medication');
+    const medicationDetails = document.getElementById('medication_details');
+    
+    isMedicationCheckbox.addEventListener('change', function() {
+        medicationDetails.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Form validation
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+});
+</script>
+{% endblock %}

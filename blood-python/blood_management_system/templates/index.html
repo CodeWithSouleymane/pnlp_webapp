@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Blood Bank Management System{% endblock %}
+
+{% block content %}
+<div class="hero-section text-white py-5 mb-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Save Lives Through Blood Donation</h1>
+                <p class="lead mb-4">Join our mission to ensure every patient has access to safe and timely blood transfusions.</p>
+                {% if not current_user.is_authenticated %}
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('register_donor') }}" class="btn btn-primary btn-lg">Become a Donor</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Sign In</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/blood-donation.svg') }}" alt="Blood Donation" class="img-fluid" style="max-height: 400px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Quick Actions Section -->
+    <section class="quick-actions mb-5">
+        <h2 class="text-center mb-4">Quick Actions</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 action-card">
+                    <div class="card-body text-center">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-hand-holding-medical fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Donate Blood</h5>
+                        <p class="card-text">Schedule your next blood donation and save lives.</p>
+                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary mt-2">Schedule Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 action-card">
+                    <div class="card-body text-center">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-search fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Find Blood</h5>
+                        <p class="card-text">Check real-time blood availability in our bank.</p>
+                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-success mt-2">Check Availability</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 action-card">
+                    <div class="card-body text-center">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-procedures fa-3x text-danger"></i>
+                        </div>
+                        <h5 class="card-title">Request Blood</h5>
+                        <p class="card-text">Submit an emergency blood request for patients.</p>
+                        <a href="{{ url_for('request_blood') }}" class="btn btn-outline-danger mt-2">Request Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 action-card">
+                    <div class="card-body text-center">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-calendar-alt fa-3x text-info"></i>
+                        </div>
+                        <h5 class="card-title">Appointments</h5>
+                        <p class="card-text">Schedule or manage your appointments.</p>
+                        <a href="{{ url_for('calendar_view') }}" class="btn btn-outline-info mt-2">Manage Appointments</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blood Availability Section -->
+    <section class="blood-availability mb-5">
+        <h2 class="text-center mb-4">Current Blood Availability</h2>
+        <div class="row g-4">
+            {% for blood_type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+            <div class="col-md-3">
+                <div class="card blood-type-card">
+                    <div class="card-body text-center">
+                        <h3 class="blood-type mb-2">{{ blood_type }}</h3>
+                        <div class="quantity-indicator">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"></div>
+                            </div>
+                            <p class="mb-0">Available Units: <span class="fw-bold">25</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Information Section -->
+    <section class="info-section mb-5">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-clock text-primary me-2"></i>Opening Hours</h5>
+                        <ul class="list-unstyled">
+                            <li>Monday - Friday: 8:00 AM - 8:00 PM</li>
+                            <li>Saturday: 9:00 AM - 5:00 PM</li>
+                            <li>Sunday: 10:00 AM - 2:00 PM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-phone text-success me-2"></i>Emergency Contact</h5>
+                        <p>24/7 Emergency Hotline:</p>
+                        <h4 class="text-danger">1-800-BLOOD-HELP</h4>
+                        <p class="mb-0">For urgent blood requirements</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-map-marker-alt text-danger me-2"></i>Location</h5>
+                        <p>National Center of Donor Blood</p>
+                        <p class="mb-0">123 Medical Center Drive<br>Healthcare City, HC 12345</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #dc3545 0%, #a40606 100%);
+    border-radius: 0 0 2rem 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.action-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.blood-type-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.blood-type {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.quantity-indicator {
+    padding: 1rem;
+}
+
+.progress {
+    height: 10px;
+    border-radius: 5px;
+}
+</style>
+{% endblock %}

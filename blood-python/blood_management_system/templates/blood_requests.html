@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Requests{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Blood Requests</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient</th>
+                            <th>Blood Type</th>
+                            <th>Quantity (ml)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requests.items %}
+                        <tr>
+                            <td>{{ request.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <a href="{{ url_for('patient_profile', patient_id=request.patient_id) }}">
+                                    {{ request.patient.name }}
+                                </a>
+                            </td>
+                            <td>{{ request.blood_type }}</td>
+                            <td>{{ request.quantity_ml }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'warning' if request.status == 'Pending' else 'success' if request.status == 'Fulfilled' else 'danger' }}">
+                                    {{ request.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                {% if request.status == 'Pending' %}
+                                <a href="#" class="btn btn-sm btn-success">Fulfill Request</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if requests.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('blood_requests', page=requests.prev_num) }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in requests.iter_pages(left_edge=2, left_current=2, right_current=3, right_edge=2) %}
+                        {% if page_num %}
+                            {% if page_num == requests.page %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('blood_requests', page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if requests.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('blood_requests', page=requests.next_num) }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

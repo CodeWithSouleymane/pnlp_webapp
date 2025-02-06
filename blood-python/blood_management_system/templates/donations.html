@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Donations{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Blood Donations</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Donor</th>
+                            <th>Blood Type</th>
+                            <th>Quantity (ml)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in donations.items %}
+                        <tr>
+                            <td>{{ donation.donation_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <a href="{{ url_for('donor_profile', donor_id=donation.donor_id) }}">
+                                    {{ donation.donor_profile.name }}
+                                </a>
+                            </td>
+                            <td>{{ donation.blood_type }}</td>
+                            <td>{{ donation.quantity_ml }}</td>
+                            <td>
+                                <span class="badge bg-success">Completed</span>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if donations.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('donations', page=donations.prev_num) }}">Previous</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in donations.iter_pages(left_edge=2, left_current=2, right_current=3, right_edge=2) %}
+                        {% if page_num %}
+                            {% if page_num == donations.page %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('donations', page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if donations.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('donations', page=donations.next_num) }}">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

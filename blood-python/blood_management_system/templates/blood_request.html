@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Request{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Create Blood Request</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.patient_id.label(class="form-label") }}
+                            {{ form.patient_id(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.blood_type.label(class="form-label") }}
+                            {{ form.blood_type(class="form-control") }}
+                            {% if compatible_types %}
+                            <div class="form-text">
+                                Compatible blood types: {{ compatible_types|join(', ') }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.quantity_ml.label(class="form-label") }}
+                            {{ form.quantity_ml(class="form-control") }}
+                        </div>
+                        {{ form.submit(class="btn btn-primary") }}
+                        <a href="{{ url_for('patients') }}" class="btn btn-secondary">Back to Patients</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Information -->
+        {% if patient %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Patient Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">{{ patient.name }}</dd>
+
+                        <dt class="col-sm-4">Blood Type</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">{{ patient.blood_type }}</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Contact</dt>
+                        <dd class="col-sm-8">{{ patient.contact }}</dd>
+                    </dl>
+
+                    <!-- Blood Inventory Status -->
+                    <h6 class="mt-4">Available Blood Inventory</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Blood Type</th>
+                                    <th>Available Quantity</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for blood_type, quantity in inventory.items() %}
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-primary">{{ blood_type }}</span>
+                                    </td>
+                                    <td>{{ quantity }}ml</td>
+                                    <td>
+                                        {% if quantity > 1000 %}
+                                        <span class="badge bg-success">Sufficient</span>
+                                        {% elif quantity > 500 %}
+                                        <span class="badge bg-warning">Moderate</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Low</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

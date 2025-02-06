@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Total Donors</h5>
+                    <h2 class="display-4">{{ total_donors }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Total Patients</h5>
+                    <h2 class="display-4">{{ total_patients }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Donors</h5>
+                    <h2 class="display-4">{{ pending_donors }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Requests</h5>
+                    <h2 class="display-4">{{ pending_requests }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <!-- Blood Inventory -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Blood Inventory</h5>
+                    <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-3">
+                        {% for blood_type, quantity in inventory_data.items() %}
+                            <div class="blood-type-badge {{ 'bg-success' if quantity >= 1000 else 'bg-warning' if quantity >= 500 else 'bg-danger' }}">
+                                {{ blood_type }}
+                                <small class="d-block">{{ quantity }}ml</small>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary">Manage Donors</a>
+                        <a href="{{ url_for('patients') }}" class="btn btn-outline-success">Manage Patients</a>
+                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-info">Manage Blood Inventory</a>
+                        <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary">Generate Reports</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Donations -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Donations</h5>
+                    <a href="{{ url_for('donations') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_donations %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Donor</th>
+                                        <th>Blood Type</th>
+                                        <th>Quantity</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donation in recent_donations %}
+                                    <tr>
+                                        <td>{{ donation.donor.name }}</td>
+                                        <td>
+                                            <span class="blood-type-badge small">{{ donation.blood_type }}</span>
+                                        </td>
+                                        <td>{{ donation.quantity_ml }}ml</td>
+                                        <td>{{ donation.donation_date.strftime('%Y-%m-%d') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center mb-0">No recent donations</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Blood Requests -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Blood Requests</h5>
+                    <a href="{{ url_for('blood_requests') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_requests %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Blood Type</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for request in recent_requests %}
+                                    <tr>
+                                        <td>{{ request.patient.name }}</td>
+                                        <td>
+                                            <span class="blood-type-badge small">{{ request.blood_type }}</span>
+                                        </td>
+                                        <td>{{ request.quantity_ml }}ml</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'warning' if request.status == 'Pending' else 'success' if request.status == 'Completed' else 'danger' }}">
+                                                {{ request.status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center mb-0">No recent blood requests</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.blood-type-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    min-width: 60px;
+}
+
+.blood-type-badge.small {
+    padding: 0.25rem 0.5rem;
+    min-width: 45px;
+    font-size: 0.875rem;
+}
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 1rem;
+}
+
+.table th {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Donor Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Donor Registration Form -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Register New Donor</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('register_donor') }}">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.blood_type.label(class="form-label") }}
+                            {{ form.blood_type(class="form-control") }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.contact.label(class="form-label") }}
+                            {{ form.contact(class="form-control") }}
+                        </div>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donor List -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Registered Donors</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Blood Type</th>
+                                    <th>Contact</th>
+                                    <th>Last Donation</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for donor in donors %}
+                                <tr>
+                                    <td>{{ donor.id }}</td>
+                                    <td>{{ donor.name }}</td>
+                                    <td><span class="badge bg-primary">{{ donor.blood_type }}</span></td>
+                                    <td>{{ donor.contact }}</td>
+                                    <td>
+                                        {% if donor.last_donation %}
+                                            {{ donor.last_donation.strftime('%Y-%m-%d') }}
+                                        {% else %}
+                                            No donations yet
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success" 
+                                                onclick="window.location.href='{{ url_for('record_donation', donor_id=donor.id) }}';">
+                                            Record Donation
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

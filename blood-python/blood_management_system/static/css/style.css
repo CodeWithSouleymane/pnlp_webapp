@@ -1,0 +1,286 @@
+/* Blood Bank Management System Styles */
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0b5ed7;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --body-bg: #f8f9fa;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--body-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--dark-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Top Bar */
+.top-bar {
+    font-size: 0.9rem;
+}
+
+.top-bar .social-links a {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.top-bar .social-links a:hover {
+    opacity: 1;
+}
+
+/* Navigation */
+.navbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-scrolled {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--dark-color);
+}
+
+.brand-tagline {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+}
+
+/* User Avatar */
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.1);
+}
+
+/* Buttons */
+.btn {
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    margin-top: auto;
+}
+
+.footer-brand img {
+    height: 40px;
+}
+
+.footer-title {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-contact li {
+    margin-bottom: 1rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.footer-contact i {
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.footer-bottom-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.footer-bottom-links a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+}
+
+.footer-bottom-links a:hover {
+    color: white;
+}
+
+/* Flash Messages */
+.flash-messages {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+    max-width: 350px;
+}
+
+.alert {
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    padding: 5rem 0;
+    margin-bottom: 4rem;
+    border-radius: 0 0 2rem 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.hero-section h1 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-bar {
+        text-align: center;
+    }
+    
+    .top-bar .social-links {
+        margin-top: 0.5rem;
+    }
+    
+    .navbar-brand img {
+        height: 30px;
+    }
+    
+    .footer-bottom-links {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --body-bg: #212529;
+        --light-color: #343a40;
+    }
+
+    body {
+        color: #f8f9fa;
+    }
+
+    .navbar {
+        background-color: #2b3035 !important;
+    }
+
+    .brand-name {
+        color: #f8f9fa;
+    }
+
+    .nav-link {
+        color: rgba(255,255,255,0.85) !important;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+    }
+
+    .card {
+        background-color: #343a40;
+        color: #f8f9fa;
+    }
+
+    .dropdown-menu {
+        background-color: #2b3035;
+        border-color: #495057;
+    }
+
+    .dropdown-item {
+        color: #f8f9fa;
+    }
+
+    .dropdown-item:hover {
+        background-color: #495057;
+        color: white;
+    }
+}

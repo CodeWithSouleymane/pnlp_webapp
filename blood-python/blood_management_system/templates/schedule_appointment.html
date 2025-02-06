@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Appointment{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-calendar-plus me-2"></i>Schedule Appointment
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <div class="form-group">
+                                {{ form.appointment_type.label(class="form-label") }}
+                                {{ form.appointment_type(class="form-select") }}
+                                {% if form.appointment_type.errors %}
+                                    {% for error in form.appointment_type.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-group">
+                                {{ form.blood_type.label(class="form-label") }}
+                                {{ form.blood_type(class="form-select") }}
+                                {% if form.blood_type.errors %}
+                                    {% for error in form.blood_type.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.preferred_date.label(class="form-label") }}
+                                    {{ form.preferred_date(class="form-control", type="date") }}
+                                    {% if form.preferred_date.errors %}
+                                        {% for error in form.preferred_date.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.preferred_time.label(class="form-label") }}
+                                    {{ form.preferred_time(class="form-select") }}
+                                    {% if form.preferred_time.errors %}
+                                        {% for error in form.preferred_time.errors %}
+                                            <span class="text-danger">{{ error }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-group">
+                                {{ form.notes.label(class="form-label") }}
+                                {{ form.notes(class="form-control", rows=4, placeholder="Any additional information or special requirements...") }}
+                                {% if form.notes.errors %}
+                                    {% for error in form.notes.errors %}
+                                        <span class="text-danger">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Available Time Slots -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Available Time Slots</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Availability</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for time, label in form.preferred_time.choices %}
+                                <tr>
+                                    <td>{{ label }}</td>
+                                    <td>
+                                        {% if time in available_slots %}
+                                            <span class="badge bg-success">Available</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Booked</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Inventory Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blood-type-card {
+        transition: transform 0.2s;
+    }
+    .blood-type-card:hover {
+        transform: translateY(-5px);
+    }
+    .critical-level {
+        color: #dc3545;
+    }
+    .warning-level {
+        color: #ffc107;
+    }
+    .good-level {
+        color: #198754;
+    }
+    .chart-container {
+        height: 300px;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="text-center">Blood Bank Inventory Management</h2>
+            <p class="text-center text-muted">Real-time blood inventory status and management</p>
+        </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Blood Units</h5>
+                    <h3 class="card-text">
+                        <i class="bi bi-droplet-fill me-2"></i>
+                        {{ total_units }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Volume (ml)</h5>
+                    <h3 class="card-text">
+                        <i class="bi bi-water me-2"></i>
+                        {{ total_quantity }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Low Stock Types</h5>
+                    <h3 class="card-text">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ low_stock }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Last Updated</h5>
+                    <h3 class="card-text">
+                        <i class="bi bi-clock-history me-2"></i>
+                        {{ now.strftime('%H:%M') }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blood Type Cards -->
+    <div class="row mb-4">
+        {% for item in inventory_summary %}
+        <div class="col-md-3 mb-3">
+            <div class="card blood-type-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0">
+                            <span class="badge {% if item.status == 'Critical' %}bg-danger{% elif item.status == 'Warning' %}bg-warning{% else %}bg-success{% endif %}">
+                                {{ item.blood_type }}
+                            </span>
+                        </h5>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updateModal{{ item.blood_type.replace('+', 'pos').replace('-', 'neg') }}">
+                            <i class="bi bi-pencil-square"></i> Update
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="{% if item.status == 'Critical' %}critical-level{% elif item.status == 'Warning' %}warning-level{% else %}good-level{% endif %}">
+                            {{ item.quantity }} ml
+                        </h3>
+                        <div class="progress mt-3">
+                            {% set progress = (item.quantity / 2000.0 * 100) %}
+                            {% if progress > 100 %}{% set progress = 100 %}{% endif %}
+                            <div class="progress-bar {% if item.status == 'Critical' %}bg-danger{% elif item.status == 'Warning' %}bg-warning{% else %}bg-success{% endif %}" 
+                                 role="progressbar" 
+                                 style="width: {{ progress }}%" 
+                                 aria-valuenow="{{ item.quantity }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="2000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Modal for each blood type -->
+        <div class="modal fade" id="updateModal{{ item.blood_type.replace('+', 'pos').replace('-', 'neg') }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update {{ item.blood_type }} Inventory</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ url_for('update_inventory') }}" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="blood_type" value="{{ item.blood_type }}">
+                            <div class="mb-3">
+                                <label class="form-label">Quantity (ml)</label>
+                                <input type="number" class="form-control" name="quantity_ml" required min="0">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Operation</label>
+                                <select class="form-select" name="operation" required>
+                                    <option value="add">Add to Inventory</option>
+                                    <option value="subtract">Remove from Inventory</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Inventory</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Detailed Inventory Table -->
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Detailed Inventory</h5>
+            <button class="btn btn-light btn-sm" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print Report
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Blood Type</th>
+                            <th>Quantity (ml)</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in inventory_summary %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <span class="badge {% if item.quantity <= 1000 %}bg-danger{% elif item.quantity <= 2000 %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ item.blood_type }}
+                                </span>
+                            </td>
+                            <td>{{ item.quantity }}</td>
+                            <td>
+                                <span class="badge {% if item.status == 'Critical' %}bg-danger{% elif item.status == 'Warning' %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ item.status }}
+                                </span>
+                            </td>
+                            <td>{{ now.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
