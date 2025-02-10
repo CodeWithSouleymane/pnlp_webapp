@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Blood Bank Management System{% endblock %}</title>
+    <title>{% block title %}Système de Gestion de Banque de Sang{% endblock %}</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
@@ -21,7 +21,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
                 <i class="fas fa-heart text-danger me-2"></i>
-                <span>Blood Bank</span>
+                <span>SOKHNA</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -34,72 +34,72 @@
                         {% if current_user.role == 'admin' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
-                                    <i class="bi bi-speedometer2"></i> Dashboard
+                                    <i class="bi bi-speedometer2"></i> Tableau de bord
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('donors') }}">
-                                    <i class="bi bi-people"></i> Donors
+                                    <i class="bi bi-people"></i> Donneurs
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('appointments') }}">
-                                    <i class="bi bi-calendar-check"></i> Appointments
+                                    <i class="bi bi-calendar-check"></i> Rendez-vous
                                 </a>
                             </li>
                         {% elif current_user.role == 'donor' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('donors') }}">
-                                    <i class="fas fa-user me-1"></i> My Profile
+                                    <i class="fas fa-user me-1"></i> Mon Profil
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('record_donation', donor_id=current_user.id) }}">
-                                    <i class="fas fa-hand-holding-medical me-1"></i> Donate
+                                    <i class="fas fa-hand-holding-medical me-1"></i> Faire un don
                                 </a>
                             </li>
                         {% elif current_user.role == 'patient' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('patient_dashboard') }}">
-                                    <i class="fas fa-user me-1"></i> My Profile
+                                    <i class="fas fa-user me-1"></i> Mon Profil
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('patient_appointments') }}">
-                                    <i class="fas fa-calendar-alt me-1"></i> Appointments
+                                    <i class="fas fa-calendar-alt me-1"></i> Rendez-vous
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('request_blood') }}">
-                                    <i class="fas fa-tint me-1"></i> Request Blood
+                                    <i class="fas fa-tint me-1"></i> Demander du sang
                                 </a>
                             </li>
                         {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('logout') }}">
-                                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
                             </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                                <i class="fas fa-sign-in-alt me-1"></i> Connexion
                             </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="registerDropdown" role="button" 
                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-plus me-1"></i> Register
+                                <i class="fas fa-user-plus me-1"></i> S'inscrire
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="registerDropdown">
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('register_donor') }}">
-                                        <i class="fas fa-hand-holding-medical me-1"></i> As Donor
+                                        <i class="fas fa-hand-holding-medical me-1"></i> Comme Donneur
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ url_for('register_patient') }}">
-                                        <i class="fas fa-user-injured me-1"></i> As Patient
+                                        <i class="fas fa-user-injured me-1"></i> Comme Patient
                                     </a>
                                 </li>
                             </ul>
@@ -121,20 +121,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5><i class="fas fa-heart text-danger me-2"></i>Blood Bank</h5>
-                    <p>Saving lives through safe and efficient blood donation management.</p>
+                    <h5><i class="fas fa-heart text-danger me-2"></i>Banque de Sang</h5>
+                    <p>Sauver des vies grâce à une gestion sûre et efficace des dons de sang.</p>
                 </div>
                 <div class="col-md-4">
-                    <h5>Quick Links</h5>
+                    <h5>Liens Rapides</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url_for('index') }}" class="text-light">Home</a></li>
-                        <li><a href="#" class="text-light">About Us</a></li>
+                        <li><a href="{{ url_for('index') }}" class="text-light">Accueil</a></li>
+                        <li><a href="#" class="text-light">À propos de nous</a></li>
                         <li><a href="#" class="text-light">Contact</a></li>
-                        <li><a href="#" class="text-light">Privacy Policy</a></li>
+                        <li><a href="#" class="text-light">Politique de confidentialité</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h5>Contact Us</h5>
+                    <h5>Nous Contacter</h5>
                     <ul class="list-unstyled">
                         <li><i class="fas fa-phone me-2"></i>1-800-BLOOD-HELP</li>
                         <li><i class="fas fa-envelope me-2"></i>contact@bloodbank.com</li>
@@ -144,7 +144,7 @@
             </div>
             <hr class="my-4">
             <div class="text-center">
-                <p class="mb-0">&copy; {{ now.year }} Blood Bank Management System. All rights reserved.</p>
+                <p class="mb-0">&copy; {{ now.year }} Banque de Sang. Tous droits réservés.</p>
             </div>
         </div>
     </footer>

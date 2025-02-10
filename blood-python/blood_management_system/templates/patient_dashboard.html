@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Patient Dashboard{% endblock %}
+{% block title %}Tableau de Bord Patient{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -9,7 +9,7 @@
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -17,22 +17,26 @@
 
     <div class="row mb-4">
         <div class="col-md-8">
-            <h2 class="mb-3">Welcome, {{ patient.name }}!</h2>
+            <h2 class="mb-3">Bienvenue, {{ patient.name }} !</h2>
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Personal Information</h5>
+                    <h5 class="card-title">Informations Personnelles</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Blood Type:</strong> {{ patient.blood_type }}</p>
-                            <p><strong>Email:</strong> {{ patient.email }}</p>
-                            <p><strong>Phone:</strong> {{ patient.phone }}</p>
+                            <p><strong>Groupe Sanguin :</strong> {{ patient.blood_type }}</p>
+                            <p><strong>Email :</strong> {{ patient.email }}</p>
+                            <p><strong>Téléphone :</strong> {{ patient.phone }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Address:</strong> {{ patient.address }}</p>
-                            <p><strong>City:</strong> {{ patient.city }}</p>
-                            <p><strong>Status:</strong> 
+                            <p><strong>Adresse :</strong> {{ patient.address }}</p>
+                            <p><strong>Ville :</strong> {{ patient.city }}</p>
+                            <p><strong>Statut :</strong> 
                                 <span class="badge bg-{{ 'success' if patient.status == 'Active' else 'warning' }}">
-                                    {{ patient.status }}
+                                    {% if patient.status == 'Active' %}
+                                        Actif
+                                    {% else %}
+                                        {{ patient.status }}
+                                    {% endif %}
                                 </span>
                             </p>
                         </div>
@@ -43,7 +47,7 @@
         <div class="col-md-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Compatible Blood Types</h5>
+                    <h5 class="card-title">Groupes Sanguins Compatibles</h5>
                     <div class="d-flex flex-wrap gap-2 mt-3">
                         {% for blood_type, quantity in blood_inventory.items() %}
                             <div class="blood-type-badge {{ 'bg-success' if quantity >= 1000 else 'bg-warning' if quantity >= 500 else 'bg-danger' }}">
@@ -59,9 +63,9 @@
 
     <div class="card shadow-sm mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Your Blood Requests</h5>
+            <h5 class="mb-0">Vos Demandes de Sang</h5>
             <a href="{{ url_for('request_blood') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>New Request
+                <i class="fas fa-plus me-2"></i>Nouvelle Demande
             </a>
         </div>
         <div class="card-body">
@@ -70,11 +74,11 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Request ID</th>
-                                <th>Blood Type</th>
-                                <th>Quantity (ml)</th>
-                                <th>Status</th>
-                                <th>Request Date</th>
+                                <th>ID Demande</th>
+                                <th>Groupe Sanguin</th>
+                                <th>Quantité (ml)</th>
+                                <th>Statut</th>
+                                <th>Date de Demande</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,7 +91,13 @@
                                 <td>{{ request.quantity_ml }}ml</td>
                                 <td>
                                     <span class="badge bg-{{ 'warning' if request.status == 'Pending' else 'success' if request.status == 'Completed' else 'danger' }}">
-                                        {{ request.status }}
+                                        {% if request.status == 'Pending' %}
+                                            En Attente
+                                        {% elif request.status == 'Completed' %}
+                                            Terminé
+                                        {% else %}
+                                            {{ request.status }}
+                                        {% endif %}
                                     </span>
                                 </td>
                                 <td>{{ request.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
@@ -98,7 +108,7 @@
                 </div>
             {% else %}
                 <div class="text-center py-4">
-                    <p class="text-muted mb-0">You haven't made any blood requests yet.</p>
+                    <p class="text-muted mb-0">Vous n'avez pas encore fait de demande de sang.</p>
                 </div>
             {% endif %}
         </div>

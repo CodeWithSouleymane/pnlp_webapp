@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Register Patient{% endblock %}
+{% block title %}Inscription Patient{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,7 +8,7 @@
         <div class="col-12 col-lg-8">
             <div class="card shadow-lg border-0">
                 <div class="card-header bg-primary text-white text-center py-4">
-                    <h2 class="mb-0"><i class="fas fa-user-plus me-2"></i>Patient Registration</h2>
+                    <h2 class="mb-0"><i class="fas fa-user-plus me-2"></i>Inscription Patient</h2>
                 </div>
                 <div class="card-body p-4">
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -16,7 +16,7 @@
                             {% for category, message in messages %}
                                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                                     {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                                 </div>
                             {% endfor %}
                         {% endif %}
@@ -26,17 +26,17 @@
                         {{ form.hidden_tag() }}
                         
                         <div class="row mb-4">
-                            <h4 class="mb-3">Personal Information</h4>
+                            <h4 class="mb-3">Informations Personnelles</h4>
                             <div class="col-md-6 mb-3">
                                 {{ form.first_name.label(class="form-label") }}
-                                {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+                                {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else ""), placeholder="Votre prénom") }}
                                 {% if form.first_name.errors %}
                                     <div class="invalid-feedback">{{ form.first_name.errors[0] }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
                                 {{ form.last_name.label(class="form-label") }}
-                                {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+                                {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else ""), placeholder="Votre nom") }}
                                 {% if form.last_name.errors %}
                                     <div class="invalid-feedback">{{ form.last_name.errors[0] }}</div>
                                 {% endif %}
@@ -57,14 +57,14 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 {{ form.contact.label(class="form-label") }}
-                                {{ form.contact(class="form-control" + (" is-invalid" if form.contact.errors else "")) }}
+                                {{ form.contact(class="form-control" + (" is-invalid" if form.contact.errors else ""), placeholder="Votre numéro de téléphone") }}
                                 {% if form.contact.errors %}
                                     <div class="invalid-feedback">{{ form.contact.errors[0] }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-12 mb-3">
                                 {{ form.address.label(class="form-label") }}
-                                {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), rows="3") }}
+                                {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), rows="3", placeholder="Votre adresse complète") }}
                                 {% if form.address.errors %}
                                     <div class="invalid-feedback">{{ form.address.errors[0] }}</div>
                                 {% endif %}
@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            <button type="submit" class="btn btn-primary btn-lg">S'inscrire</button>
                         </div>
                     </form>
                 </div>

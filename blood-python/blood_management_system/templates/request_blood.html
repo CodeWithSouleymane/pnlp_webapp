@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Request Blood{% endblock %}
+{% block title %}Demande de Sang{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,7 +9,7 @@
             <div class="card shadow">
                 <div class="card-header bg-danger text-white">
                     <h3 class="card-title mb-0">
-                        <i class="fas fa-tint me-2"></i>Request Blood
+                        <i class="fas fa-tint me-2"></i>Demande de Sang
                     </h3>
                 </div>
                 <div class="card-body">
@@ -48,7 +48,7 @@
                                             <span class="text-danger">{{ error }}</span>
                                         {% endfor %}
                                     {% endif %}
-                                    <small class="text-muted">Minimum: 450ml (1 unit)</small>
+                                    <small class="text-muted">Minimum : 450ml (1 unité)</small>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="mb-3">
                             <div class="form-group">
                                 {{ form.notes.label(class="form-label") }}
-                                {{ form.notes(class="form-control", rows=4, placeholder="Any additional information about the request...") }}
+                                {{ form.notes(class="form-control", rows=4, placeholder="Informations supplémentaires sur la demande...") }}
                                 {% if form.notes.errors %}
                                     {% for error in form.notes.errors %}
                                         <span class="text-danger">{{ error }}</span>
@@ -87,7 +87,7 @@
             <!-- Blood Availability Card -->
             <div class="card mt-4">
                 <div class="card-header bg-info text-white">
-                    <h5 class="mb-0">Current Blood Availability</h5>
+                    <h5 class="mb-0">Disponibilité Actuelle du Sang</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -95,10 +95,10 @@
                         <div class="col-md-3 col-6 mb-3">
                             <div class="text-center">
                                 <h5>{{ blood_type }}</h5>
-                                {% set inventory = blood_inventory.get(blood_type, {'quantity_ml': 0, 'status': 'Not Available'}) %}
-                                <span class="badge bg-{{ 'success' if inventory.quantity_ml >= 1000 else 'warning' if inventory.quantity_ml >= 500 else 'danger' }}">
-                                    {{ (inventory.quantity_ml / 450)|round|int }} units
-                                </span>
+                                {% set inventory = blood_inventory.get(blood_type, {'quantity_ml': 0, 'status': 'Non disponible'}) %}
+                                <div class="badge {% if inventory.status == 'Critical' %}bg-danger{% elif inventory.status == 'Warning' %}bg-warning{% else %}bg-success{% endif %}">
+                                    {{ inventory.quantity_ml }} ml
+                                </div>
                             </div>
                         </div>
                         {% endfor %}

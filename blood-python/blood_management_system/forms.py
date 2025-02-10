@@ -1,233 +1,209 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField, PasswordField, EmailField, DateField, FloatField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, NumberRange, Regexp, Optional
-from wtforms import ValidationError
+from wtforms import (
+    StringField, SelectField, IntegerField, SubmitField, 
+    PasswordField, EmailField, DateField, FloatField, 
+    BooleanField, TextAreaField
+)
+from wtforms.validators import (
+    DataRequired, Email, Length, NumberRange, 
+    Regexp, Optional, ValidationError
+)
 from datetime import datetime
-from models.donor import Donor
-from models.patient import Patient
+from models import Donor, Patient
 
 class LoginForm(FlaskForm):
-    username = StringField('Username or Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
+    username = StringField('Nom d\'utilisateur ou Email', validators=[DataRequired()])
+    password = PasswordField('Mot de passe', validators=[DataRequired()])
+    submit = SubmitField('Connexion')
 
 class DonorForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=100)])
-    blood_type = SelectField('Blood Type', 
+    name = StringField('Nom', validators=[DataRequired(), Length(min=2, max=100)])
+    blood_type = SelectField('Groupe sanguin', 
                            choices=[('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'),
                                   ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')],
                            validators=[DataRequired()])
     contact = StringField('Contact', validators=[DataRequired(), Length(min=10, max=20)])
-    submit = SubmitField('Register Donor')
+    submit = SubmitField('Enregistrer le donneur')
 
 class DonationForm(FlaskForm):
-    donor_id = SelectField('Donor', coerce=int, validators=[DataRequired()])
-    quantity_ml = IntegerField('Quantity (ml)', 
+    donor_id = SelectField('Donneur', coerce=int, validators=[DataRequired()])
+    quantity_ml = IntegerField('Quantité (ml)', 
                              validators=[DataRequired(), NumberRange(min=200, max=550, 
-                             message="Donation must be between 200ml and 550ml")])
-    submit = SubmitField('Record Donation')
+                             message="Le don doit être entre 200ml et 550ml")])
+    submit = SubmitField('Enregistrer le don')
 
 class PatientForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=100)])
-    blood_type = SelectField('Blood Type',
+    name = StringField('Nom', validators=[DataRequired(), Length(min=2, max=100)])
+    blood_type = SelectField('Groupe sanguin',
                            choices=[('A+', 'A+'), ('A-', 'A-'), ('B+', 'B+'), ('B-', 'B-'),
                                   ('AB+', 'AB+'), ('AB-', 'AB-'), ('O+', 'O+'), ('O-', 'O-')],
                            validators=[DataRequired()])
     contact = StringField('Contact', validators=[DataRequired(), Length(min=10, max=20)])
-    submit = SubmitField('Register Patient')
+    submit = SubmitField('Enregistrer le patient')
 
 class BloodRequestForm(FlaskForm):
-    blood_type = SelectField('Blood Type', choices=[
+    blood_type = SelectField('Groupe sanguin', choices=[
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
         ('AB+', 'AB+'), ('AB-', 'AB-'),
         ('O+', 'O+'), ('O-', 'O-')
     ], validators=[DataRequired()])
-    quantity_ml = IntegerField('Quantity (ml)', validators=[DataRequired(), NumberRange(min=450, max=5000)])
-    urgency = SelectField('Urgency Level', choices=[
-        ('Emergency', 'Emergency'),
+    quantity_ml = IntegerField('Quantité (ml)', validators=[DataRequired(), NumberRange(min=450, max=5000)])
+    urgency = SelectField('Niveau d\'urgence', choices=[
+        ('Emergency', 'Urgence extrême'),
         ('Urgent', 'Urgent'),
         ('Standard', 'Standard')
     ], validators=[DataRequired()])
-    notes = TextAreaField('Additional Notes', validators=[Optional(), Length(max=500)])
-    submit = SubmitField('Submit Request')
+    notes = TextAreaField('Notes supplémentaires', validators=[Optional(), Length(max=500)])
+    submit = SubmitField('Soumettre la demande')
 
 class DonorRegistrationForm(FlaskForm):
-    # Personal Information
-    name = StringField('Full Name', validators=[
+    # Informations personnelles
+    name = StringField('Nom complet', validators=[
         DataRequired(),
-        Length(min=2, max=100, message="Name must be between 2 and 100 characters")
+        Length(min=2, max=100, message="Le nom doit contenir entre 2 et 100 caractères")
     ])
     email = EmailField('Email', validators=[
         DataRequired(),
-        Email(message="Please enter a valid email address")
+        Email(message="Veuillez entrer une adresse email valide")
     ])
-    phone = StringField('Phone', validators=[
+    phone = StringField('Téléphone', validators=[
         DataRequired(),
-        Regexp(r'^\+?1?\d{9,15}$', message="Please enter a valid phone number")
+        Regexp(r'^\d{9}$', message="Le numéro de téléphone doit contenir exactement 9 chiffres")
     ])
-    date_of_birth = DateField('Date of Birth', validators=[
+    date_of_birth = DateField('Date de naissance', validators=[
         DataRequired(),
         lambda form, field: check_age(field.data)
     ])
 
-    # Medical Information
-    blood_type = SelectField('Blood Type', choices=[
-        ('', 'Select Blood Type'),
+    # Informations médicales
+    blood_type = SelectField('Groupe sanguin', choices=[
+        ('', 'Sélectionner le groupe sanguin'),
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
         ('AB+', 'AB+'), ('AB-', 'AB-'),
         ('O+', 'O+'), ('O-', 'O-')
     ], validators=[DataRequired()])
     
-    weight = FloatField('Weight (kg)', validators=[
+    weight = FloatField('Poids (kg)', validators=[
         DataRequired(),
-        NumberRange(min=45, max=200, message="Weight must be between 45 and 200 kg")
+        NumberRange(min=45, max=200, message="Le poids doit être entre 45 et 200 kg")
     ])
     
-    has_diseases = BooleanField('Has Diseases')
-    diseases_details = TextAreaField('Disease Details')
+    has_diseases = BooleanField('A des maladies')
+    diseases_details = TextAreaField('Détails des maladies')
     
-    is_medication = BooleanField('On Medication')
-    medication_details = TextAreaField('Medication Details')
+    is_medication = BooleanField('Sous médicaments')
+    medication_details = TextAreaField('Détails des médicaments')
 
-    # Address Information
-    address = StringField('Address', validators=[DataRequired()])
-    city = StringField('City', validators=[DataRequired()])
-    postal_code = StringField('Postal Code', validators=[
+    # Informations d'adresse
+    address = StringField('Adresse', validators=[DataRequired()])
+    city = StringField('Ville', validators=[DataRequired()])
+    postal_code = StringField('Code postal', validators=[
         DataRequired(),
-        Regexp(r'^\d{5}$', message="Please enter a valid 5-digit postal code")
+        Regexp(r'^\d{5}$', message="Veuillez entrer un code postal valide à 5 chiffres")
     ])
 
-    # Emergency Contact
-    emergency_contact_name = StringField('Emergency Contact Name', validators=[
+    # Contact d'urgence
+    emergency_contact_name = StringField('Nom du contact d\'urgence', validators=[
         DataRequired(),
         Length(min=2, max=100)
     ])
-    emergency_contact_phone = StringField('Emergency Contact Phone', validators=[
+    emergency_contact_phone = StringField('Téléphone du contact d\'urgence', validators=[
         DataRequired(),
-        Regexp(r'^\+?1?\d{9,15}$', message="Please enter a valid phone number")
+        Regexp(r'^\d{9}$', message="Le numéro de téléphone doit contenir exactement 9 chiffres")
     ])
-    emergency_contact_relationship = StringField('Relationship', validators=[DataRequired()])
+    emergency_contact_relationship = StringField('Relation', validators=[DataRequired()])
 
-    # Consent
-    consent = BooleanField('I agree to the terms', validators=[
-        DataRequired(message="You must agree to the terms to register")
-    ])
+    # Consentement
+    consent = BooleanField('Je confirme que toutes les informations fournies sont exactes et je consens à être donneur de sang.', 
+                          validators=[DataRequired(message="Vous devez accepter les conditions pour vous inscrire")])
 
-    def validate_email(self, field):
-        if Donor.query.filter_by(email=field.data).first():
-            raise ValidationError('Email already registered')
-
-    def validate_phone(self, field):
-        if Donor.query.filter_by(phone=field.data).first():
-            raise ValidationError('Phone number already registered')
-
-def check_age(dob):
-    today = datetime.now()
-    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    if age < 18:
-        raise ValidationError('You must be at least 18 years old to register as a donor')
-    if age > 65:
-        raise ValidationError('You must be under 65 years old to register as a donor')
+    submit = SubmitField('S\'inscrire comme donneur')
 
 class PatientRegistrationForm(FlaskForm):
-    # Personal Information
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
+    first_name = StringField('Prénom', validators=[DataRequired()])
+    last_name = StringField('Nom', validators=[DataRequired()])
     email = EmailField('Email', validators=[
         DataRequired(),
-        Email(message="Please enter a valid email address")
+        Email(message="Veuillez entrer une adresse email valide")
     ])
-    contact = StringField('Contact Number', validators=[DataRequired()])
-    phone = StringField('Phone', validators=[
+    phone = StringField('Téléphone', validators=[
         DataRequired(),
-        Regexp(r'^\+?1?\d{9,15}$', message="Please enter a valid phone number")
+        Regexp(r'^\d{9}$', message="Le numéro de téléphone doit contenir exactement 9 chiffres")
     ])
-    date_of_birth = DateField('Date of Birth', validators=[DataRequired()])
-
-    # Medical Information
-    blood_type = SelectField('Blood Type', choices=[
-        ('', 'Select Blood Type'),
+    date_of_birth = DateField('Date de naissance', validators=[DataRequired()])
+    blood_type = SelectField('Groupe sanguin', choices=[
+        ('', 'Sélectionner le groupe sanguin'),
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
         ('AB+', 'AB+'), ('AB-', 'AB-'),
         ('O+', 'O+'), ('O-', 'O-')
     ], validators=[DataRequired()])
-    
-    medical_conditions = TextAreaField('Medical Conditions')
+    medical_conditions = TextAreaField('Conditions médicales')
     allergies = TextAreaField('Allergies')
-    current_medications = TextAreaField('Current Medications')
-
-    # Address Information
-    address = StringField('Address', validators=[DataRequired()])
-    city = StringField('City', validators=[DataRequired()])
-    postal_code = StringField('Postal Code', validators=[
+    current_medications = TextAreaField('Médicaments actuels')
+    address = StringField('Adresse', validators=[DataRequired()])
+    city = StringField('Ville', validators=[DataRequired()])
+    postal_code = StringField('Code postal', validators=[
         DataRequired(),
-        Regexp(r'^\d{5}$', message="Please enter a valid 5-digit postal code")
+        Regexp(r'^\d{5}$', message="Veuillez entrer un code postal valide à 5 chiffres")
     ])
-
-    # Emergency Contact
-    emergency_contact_name = StringField('Emergency Contact Name', validators=[
+    emergency_contact_name = StringField('Nom du contact d\'urgence', validators=[
         DataRequired(),
         Length(min=2, max=100)
     ])
-    emergency_contact_phone = StringField('Emergency Contact Phone', validators=[
+    emergency_contact_phone = StringField('Téléphone du contact d\'urgence', validators=[
         DataRequired(),
-        Regexp(r'^\+?1?\d{9,15}$', message="Please enter a valid phone number")
+        Regexp(r'^\d{9}$', message="Le numéro de téléphone doit contenir exactement 9 chiffres")
     ])
-    emergency_contact_relationship = StringField('Relationship', validators=[DataRequired()])
-
-    # Password for account
-    password = PasswordField('Password', validators=[
+    emergency_contact_relationship = StringField('Relation', validators=[DataRequired()])
+    password = PasswordField('Mot de passe', validators=[
         DataRequired(),
-        Length(min=8, message="Password must be at least 8 characters long")
+        Length(min=8, message="Le mot de passe doit contenir au moins 8 caractères")
     ])
-    confirm_password = PasswordField('Confirm Password', validators=[
+    confirm_password = PasswordField('Confirmer le mot de passe', validators=[
         DataRequired(),
         Length(min=8),
         lambda form, field: check_password_match(form.password, field)
     ])
-
-    # Consent
-    consent = BooleanField('I agree to the terms', validators=[
-        DataRequired(message="You must agree to the terms to register")
+    consent = BooleanField('J\'accepte les conditions', validators=[
+        DataRequired(message="Vous devez accepter les conditions pour vous inscrire")
     ])
+    submit = SubmitField('S\'inscrire comme patient')
 
-    def validate_email(self, field):
-        if Patient.query.filter_by(email=field.data).first():
-            raise ValidationError('Email already registered')
-
-    def validate_phone(self, field):
-        pass
-
-    def validate_contact(self, field):
-        if Patient.query.filter_by(contact=field.data).first():
-            raise ValidationError('This contact number is already registered.')
+def check_age(dob):
+    """Check if donor is at least 18 years old and not more than 65 years old"""
+    today = datetime.now()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    if age < 18:
+        raise ValidationError('Vous devez avoir au moins 18 ans pour vous inscrire comme donneur.')
+    elif age > 65:
+        raise ValidationError('Vous ne pouvez pas avoir plus de 65 ans pour vous inscrire comme donneur.')
 
 def check_password_match(password_field, confirm_field):
     if password_field.data != confirm_field.data:
-        raise ValidationError('Passwords must match')
+        raise ValidationError('Les mots de passe ne correspondent pas')
 
 class AppointmentForm(FlaskForm):
-    appointment_type = SelectField('Appointment Type', 
-                                 choices=[('donation', 'Blood Donation'), 
-                                        ('request', 'Blood Request')],
+    appointment_type = SelectField('Type de rendez-vous', 
+                                 choices=[('donation', 'Don de sang'), 
+                                        ('request', 'Demande de sang')],
                                  validators=[DataRequired()])
-    blood_type = SelectField('Blood Type',
+    blood_type = SelectField('Groupe sanguin',
                            choices=[('A+', 'A+'), ('A-', 'A-'), 
                                   ('B+', 'B+'), ('B-', 'B-'),
                                   ('AB+', 'AB+'), ('AB-', 'AB-'),
                                   ('O+', 'O+'), ('O-', 'O-')],
                            validators=[DataRequired()])
-    preferred_date = DateField('Preferred Date', 
+    preferred_date = DateField('Date préférée', 
                              validators=[DataRequired()],
                              format='%Y-%m-%d')
-    preferred_time = SelectField('Preferred Time',
-                               choices=[('09:00', '9:00 AM'), ('10:00', '10:00 AM'),
-                                      ('11:00', '11:00 AM'), ('12:00', '12:00 PM'),
-                                      ('14:00', '2:00 PM'), ('15:00', '3:00 PM'),
-                                      ('16:00', '4:00 PM')],
+    preferred_time = SelectField('Heure préférée',
+                               choices=[('09:00', '9h00'), ('10:00', '10h00'),
+                                      ('11:00', '11h00'), ('12:00', '12h00'),
+                                      ('14:00', '14h00'), ('15:00', '15h00'),
+                                      ('16:00', '16h00')],
                                validators=[DataRequired()])
-    notes = TextAreaField('Additional Notes')
-    submit = SubmitField('Schedule Appointment')
+    notes = TextAreaField('Notes supplémentaires')
+    submit = SubmitField('Planifier le rendez-vous')

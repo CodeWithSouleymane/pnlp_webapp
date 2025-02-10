@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Blood Donations{% endblock %}
+{% block title %}Dons de Sang{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Blood Donations</h1>
+    <h1 class="mb-4">Dons de Sang</h1>
     
     <div class="card">
         <div class="card-body">
@@ -13,10 +13,10 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Donor</th>
-                            <th>Blood Type</th>
-                            <th>Quantity (ml)</th>
-                            <th>Status</th>
+                            <th>Donneur</th>
+                            <th>Groupe Sanguin</th>
+                            <th>Quantité (ml)</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -32,10 +32,10 @@
                             <td>{{ donation.blood_type }}</td>
                             <td>{{ donation.quantity_ml }}</td>
                             <td>
-                                <span class="badge bg-success">Completed</span>
+                                <span class="badge bg-success">Terminé</span>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-outline-primary">View Details</a>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Voir les Détails</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -44,15 +44,15 @@
             </div>
             
             <!-- Pagination -->
-            <nav aria-label="Page navigation" class="mt-4">
+            <nav aria-label="Navigation des pages" class="mt-4">
                 <ul class="pagination justify-content-center">
                     {% if donations.has_prev %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('donations', page=donations.prev_num) }}">Previous</a>
+                        <a class="page-link" href="{{ url_for('donations', page=donations.prev_num) }}">Précédent</a>
                     </li>
                     {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link">Previous</span>
+                        <span class="page-link">Précédent</span>
                     </li>
                     {% endif %}
 
@@ -76,11 +76,11 @@
 
                     {% if donations.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('donations', page=donations.next_num) }}">Next</a>
+                        <a class="page-link" href="{{ url_for('donations', page=donations.next_num) }}">Suivant</a>
                     </li>
                     {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link">Next</span>
+                        <span class="page-link">Suivant</span>
                     </li>
                     {% endif %}
                 </ul>

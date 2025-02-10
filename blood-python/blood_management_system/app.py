@@ -5,66 +5,66 @@ from datetime import datetime
 import logging
 
 def create_app():
-    # Configure logging
+    # Configurer la journalisation
     logging.basicConfig(level=logging.DEBUG)
     
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize extensions with app
+    # Initialiser les extensions avec l'application
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
+    # Importer les modèles ici pour éviter les imports circulaires
+    from models import User, Donor, Patient, BloodInventory, BloodRequest, Donation, Appointment
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    # Ajouter un processeur de contexte pour la date actuelle
+    @app.context_processor
+    def inject_now():
+        return {'now': datetime.utcnow()}
+
+    # Importer et enregistrer les routes
+    from routes import register_routes
+    register_routes(app)
+
     with app.app_context():
-        # Import models after app context
-        from models import User
-        
-        @login_manager.user_loader
-        def load_user(user_id):
-            return User.query.get(int(user_id))
-
-        # Add context processor for current date
-        @app.context_processor
-        def inject_now():
-            return {'now': datetime.utcnow()}
-
-        # Import routes here to avoid circular imports
-        from routes import register_routes
-        register_routes(app)
-
         try:
-            # Create tables if they don't exist
+            # Créer les tables si elles n'existent pas
             db.create_all()
-            app.logger.info("Database tables created successfully")
+            app.logger.info("Tables de base de données créées avec succès")
             
-            # Create default admin user if it doesn't exist
+            # Créer l'utilisateur admin par défaut s'il n'existe pas
             admin_user = User.query.filter_by(username='admin').first()
             if not admin_user:
                 admin_user = User(
                     username='admin',
                     email='admin@bloodbank.com',
                     role='admin',
-                    name='Admin User'
+                    name='Administrateur'
                 )
                 admin_user.set_password('admin123')
                 db.session.add(admin_user)
                 db.session.commit()
-                app.logger.info("Default admin user created successfully")
+                app.logger.info("Utilisateur admin par défaut créé avec succès")
         except Exception as e:
-            app.logger.error(f"Error during database initialization: {str(e)}")
+            app.logger.error(f"Erreur lors de l'initialisation de la base de données: {str(e)}")
             raise e
 
     return app
 
-# Create the app instance
+# Créer l'instance de l'application
 try:
-    print("Creating Flask application...")
+    print("Création de l'application Flask...")
     app = create_app()
     
     if __name__ == '__main__':
-        print("Starting Flask development server...")
+        print("Démarrage du serveur de développement Flask...")
         app.run(debug=True)
 except Exception as e:
-    print(f"Error creating Flask application: {str(e)}")
+    print(f"Erreur lors de la création de l'application Flask: {str(e)}")
     raise e

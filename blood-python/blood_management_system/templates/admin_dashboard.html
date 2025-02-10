@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Tableau de Bord Admin{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -9,20 +9,20 @@
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
-    <h2 class="mb-4">Admin Dashboard</h2>
+    <h2 class="mb-4">Tableau de Bord Administrateur</h2>
 
-    <!-- Statistics Cards -->
+    <!-- Cartes de Statistiques -->
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card bg-primary text-white h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Total Donors</h5>
+                    <h5 class="card-title">Total Donneurs</h5>
                     <h2 class="display-4">{{ total_donors }}</h2>
                 </div>
             </div>
@@ -38,7 +38,7 @@
         <div class="col-md-3">
             <div class="card bg-warning text-dark h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Pending Donors</h5>
+                    <h5 class="card-title">Donneurs en Attente</h5>
                     <h2 class="display-4">{{ pending_donors }}</h2>
                 </div>
             </div>
@@ -46,7 +46,7 @@
         <div class="col-md-3">
             <div class="card bg-danger text-white h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Pending Requests</h5>
+                    <h5 class="card-title">Demandes en Attente</h5>
                     <h2 class="display-4">{{ pending_requests }}</h2>
                 </div>
             </div>
@@ -54,12 +54,12 @@
     </div>
 
     <div class="row mb-4">
-        <!-- Blood Inventory -->
+        <!-- Inventaire de Sang -->
         <div class="col-md-6">
             <div class="card shadow-sm h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Blood Inventory</h5>
-                    <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    <h5 class="mb-0">Inventaire de Sang</h5>
+                    <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-outline-primary">Voir Tout</a>
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-wrap gap-3">
@@ -74,18 +74,18 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
+        <!-- Actions Rapides -->
         <div class="col-md-6">
             <div class="card shadow-sm h-100">
                 <div class="card-header">
-                    <h5 class="mb-0">Quick Actions</h5>
+                    <h5 class="mb-0">Actions Rapides</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary">Manage Donors</a>
-                        <a href="{{ url_for('patients') }}" class="btn btn-outline-success">Manage Patients</a>
-                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-info">Manage Blood Inventory</a>
-                        <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary">Generate Reports</a>
+                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary">Gérer les Donneurs</a>
+                        <a href="{{ url_for('patients') }}" class="btn btn-outline-success">Gérer les Patients</a>
+                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-info">Gérer l'Inventaire de Sang</a>
+                        <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary">Générer les Rapports</a>
                     </div>
                 </div>
             </div>
@@ -93,12 +93,12 @@
     </div>
 
     <div class="row">
-        <!-- Recent Donations -->
+        <!-- Dons Récents -->
         <div class="col-md-6">
             <div class="card shadow-sm mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Donations</h5>
-                    <a href="{{ url_for('donations') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    <h5 class="mb-0">Dons Récents</h5>
+                    <a href="{{ url_for('donations') }}" class="btn btn-sm btn-outline-primary">Voir Tout</a>
                 </div>
                 <div class="card-body">
                     {% if recent_donations %}
@@ -106,9 +106,9 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Donor</th>
-                                        <th>Blood Type</th>
-                                        <th>Quantity</th>
+                                        <th>Donneur</th>
+                                        <th>Groupe Sanguin</th>
+                                        <th>Quantité</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -127,18 +127,18 @@
                             </table>
                         </div>
                     {% else %}
-                        <p class="text-muted text-center mb-0">No recent donations</p>
+                        <p class="text-muted text-center mb-0">Aucun don récent</p>
                     {% endif %}
                 </div>
             </div>
         </div>
 
-        <!-- Recent Blood Requests -->
+        <!-- Demandes de Sang Récentes -->
         <div class="col-md-6">
             <div class="card shadow-sm mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Recent Blood Requests</h5>
-                    <a href="{{ url_for('blood_requests') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    <h5 class="mb-0">Demandes de Sang Récentes</h5>
+                    <a href="{{ url_for('blood_requests') }}" class="btn btn-sm btn-outline-primary">Voir Tout</a>
                 </div>
                 <div class="card-body">
                     {% if recent_requests %}
@@ -147,9 +147,9 @@
                                 <thead>
                                     <tr>
                                         <th>Patient</th>
-                                        <th>Blood Type</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
+                                        <th>Groupe Sanguin</th>
+                                        <th>Quantité</th>
+                                        <th>Statut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -162,7 +162,13 @@
                                         <td>{{ request.quantity_ml }}ml</td>
                                         <td>
                                             <span class="badge bg-{{ 'warning' if request.status == 'Pending' else 'success' if request.status == 'Completed' else 'danger' }}">
-                                                {{ request.status }}
+                                                {% if request.status == 'Pending' %}
+                                                    En Attente
+                                                {% elif request.status == 'Completed' %}
+                                                    Terminé
+                                                {% else %}
+                                                    {{ request.status }}
+                                                {% endif %}
                                             </span>
                                         </td>
                                     </tr>
@@ -171,7 +177,7 @@
                             </table>
                         </div>
                     {% else %}
-                        <p class="text-muted text-center mb-0">No recent blood requests</p>
+                        <p class="text-muted text-center mb-0">Aucune demande de sang récente</p>
                     {% endif %}
                 </div>
             </div>

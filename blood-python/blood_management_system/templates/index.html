@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Welcome to Blood Bank Management System{% endblock %}
+{% block title %}Bienvenue au Système de Gestion de Banque de Sang{% endblock %}
 
 {% block content %}
 <div class="hero-section text-white py-5 mb-4">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-3">Save Lives Through Blood Donation</h1>
-                <p class="lead mb-4">Join our mission to ensure every patient has access to safe and timely blood transfusions.</p>
+                <h1 class="display-4 fw-bold mb-3">Sauvez des Vies par le Don de Sang</h1>
+                <p class="lead mb-4">Rejoignez notre mission pour garantir l'accès de chaque patient à des transfusions sanguines sûres et rapides.</p>
                 {% if not current_user.is_authenticated %}
                 <div class="d-flex gap-3">
-                    <a href="{{ url_for('register_donor') }}" class="btn btn-primary btn-lg">Become a Donor</a>
-                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Sign In</a>
+                    <a href="{{ url_for('register_donor') }}" class="btn btn-primary btn-lg">Devenir Donneur</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Se Connecter</a>
                 </div>
                 {% endif %}
             </div>
             <div class="col-lg-6 text-center">
-                <img src="{{ url_for('static', filename='images/blood-donation.svg') }}" alt="Blood Donation" class="img-fluid" style="max-height: 400px;">
+                <img src="{{ url_for('static', filename='images/blood-donation.svg') }}" alt="Don de Sang" class="img-fluid" style="max-height: 400px;">
             </div>
         </div>
     </div>
@@ -29,15 +29,15 @@
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
-    <!-- Quick Actions Section -->
+    <!-- Section Actions Rapides -->
     <section class="quick-actions mb-5">
-        <h2 class="text-center mb-4">Quick Actions</h2>
+        <h2 class="text-center mb-4">Actions Rapides</h2>
         <div class="row g-4">
             <div class="col-md-3">
                 <div class="card h-100 action-card">
@@ -45,9 +45,9 @@
                         <div class="icon-wrapper mb-3">
                             <i class="fas fa-hand-holding-medical fa-3x text-primary"></i>
                         </div>
-                        <h5 class="card-title">Donate Blood</h5>
-                        <p class="card-text">Schedule your next blood donation and save lives.</p>
-                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary mt-2">Schedule Now</a>
+                        <h5 class="card-title">Donner du Sang</h5>
+                        <p class="card-text">Planifiez votre prochain don de sang et sauvez des vies.</p>
+                        <a href="{{ url_for('donors') }}" class="btn btn-outline-primary mt-2">Planifier Maintenant</a>
                     </div>
                 </div>
             </div>
@@ -57,9 +57,9 @@
                         <div class="icon-wrapper mb-3">
                             <i class="fas fa-search fa-3x text-success"></i>
                         </div>
-                        <h5 class="card-title">Find Blood</h5>
-                        <p class="card-text">Check real-time blood availability in our bank.</p>
-                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-success mt-2">Check Availability</a>
+                        <h5 class="card-title">Trouver du Sang</h5>
+                        <p class="card-text">Vérifiez la disponibilité du sang en temps réel dans notre banque.</p>
+                        <a href="{{ url_for('inventory') }}" class="btn btn-outline-success mt-2">Vérifier la Disponibilité</a>
                     </div>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                         <div class="icon-wrapper mb-3">
                             <i class="fas fa-procedures fa-3x text-danger"></i>
                         </div>
-                        <h5 class="card-title">Request Blood</h5>
-                        <p class="card-text">Submit an emergency blood request for patients.</p>
-                        <a href="{{ url_for('request_blood') }}" class="btn btn-outline-danger mt-2">Request Now</a>
+                        <h5 class="card-title">Demander du Sang</h5>
+                        <p class="card-text">Soumettez une demande de sang d'urgence pour les patients.</p>
+                        <a href="{{ url_for('request_blood') }}" class="btn btn-outline-danger mt-2">Demander Maintenant</a>
                     </div>
                 </div>
             </div>
@@ -81,18 +81,18 @@
                         <div class="icon-wrapper mb-3">
                             <i class="fas fa-calendar-alt fa-3x text-info"></i>
                         </div>
-                        <h5 class="card-title">Appointments</h5>
-                        <p class="card-text">Schedule or manage your appointments.</p>
-                        <a href="{{ url_for('calendar_view') }}" class="btn btn-outline-info mt-2">Manage Appointments</a>
+                        <h5 class="card-title">Rendez-vous</h5>
+                        <p class="card-text">Planifiez ou gérez vos rendez-vous.</p>
+                        <a href="{{ url_for('calendar_view') }}" class="btn btn-outline-info mt-2">Gérer les Rendez-vous</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Blood Availability Section -->
+    <!-- Section Disponibilité du Sang -->
     <section class="blood-availability mb-5">
-        <h2 class="text-center mb-4">Current Blood Availability</h2>
+        <h2 class="text-center mb-4">Disponibilité Actuelle du Sang</h2>
         <div class="row g-4">
             {% for blood_type in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
             <div class="col-md-3">
@@ -103,7 +103,7 @@
                             <div class="progress mb-2">
                                 <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"></div>
                             </div>
-                            <p class="mb-0">Available Units: <span class="fw-bold">25</span></p>
+                            <p class="mb-0">Unités Disponibles : <span class="fw-bold">25</span></p>
                         </div>
                     </div>
                 </div>
@@ -112,17 +112,17 @@
         </div>
     </section>
 
-    <!-- Information Section -->
+    <!-- Section Information -->
     <section class="info-section mb-5">
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-clock text-primary me-2"></i>Opening Hours</h5>
+                        <h5 class="card-title"><i class="fas fa-clock text-primary me-2"></i>Heures d'Ouverture</h5>
                         <ul class="list-unstyled">
-                            <li>Monday - Friday: 8:00 AM - 8:00 PM</li>
-                            <li>Saturday: 9:00 AM - 5:00 PM</li>
-                            <li>Sunday: 10:00 AM - 2:00 PM</li>
+                            <li>Lundi - Vendredi : 8h00 - 20h00</li>
+                            <li>Samedi : 9h00 - 17h00</li>
+                            <li>Dimanche : 10h00 - 14h00</li>
                         </ul>
                     </div>
                 </div>
@@ -130,19 +130,19 @@
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-phone text-success me-2"></i>Emergency Contact</h5>
-                        <p>24/7 Emergency Hotline:</p>
+                        <h5 class="card-title"><i class="fas fa-phone text-success me-2"></i>Contact d'Urgence</h5>
+                        <p>Ligne d'Urgence 24h/24 :</p>
                         <h4 class="text-danger">1-800-BLOOD-HELP</h4>
-                        <p class="mb-0">For urgent blood requirements</p>
+                        <p class="mb-0">Pour les besoins urgents en sang</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-map-marker-alt text-danger me-2"></i>Location</h5>
-                        <p>National Center of Donor Blood</p>
-                        <p class="mb-0">123 Medical Center Drive<br>Healthcare City, HC 12345</p>
+                        <h5 class="card-title"><i class="fas fa-map-marker-alt text-danger me-2"></i>Localisation</h5>
+                        <p>Centre National du Don de Sang</p>
+                        <p class="mb-0">123 Avenue du Centre Médical<br>Ville Médicale, VM 12345</p>
                     </div>
                 </div>
             </div>

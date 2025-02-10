@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Admin - Appointments{% endblock %}
+{% block title %}Admin - Rendez-vous{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -8,35 +8,35 @@
         <div class="col">
             <h2 class="h2 mb-0">
                 <i class="fas fa-calendar-check me-2 text-primary"></i>
-                Appointments Management
+                Gestion des Rendez-vous
             </h2>
-            <p class="text-muted">Manage blood donation and request appointments</p>
+            <p class="text-muted">Gérer les rendez-vous de don et de demande de sang</p>
         </div>
         <div class="col-auto">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">
-                <i class="fas fa-file-export me-2"></i>Export Data
+                <i class="fas fa-file-export me-2"></i>Exporter les Données
             </button>
         </div>
     </div>
 
-    <!-- Filters -->
+    <!-- Filtres -->
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-3">
-                    <label class="form-label">Status</label>
+                    <label class="form-label">Statut</label>
                     <select class="form-select" id="statusFilter">
-                        <option value="">All Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="">Tous les Statuts</option>
+                        <option value="Pending">En Attente</option>
+                        <option value="Approved">Approuvé</option>
+                        <option value="Completed">Terminé</option>
+                        <option value="Cancelled">Annulé</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Blood Type</label>
+                    <label class="form-label">Groupe Sanguin</label>
                     <select class="form-select" id="bloodTypeFilter">
-                        <option value="">All Types</option>
+                        <option value="">Tous les Types</option>
                         <option value="A+">A+</option>
                         <option value="A-">A-</option>
                         <option value="B+">B+</option>
@@ -48,19 +48,19 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Date Range</label>
+                    <label class="form-label">Période</label>
                     <input type="date" class="form-control" id="dateFilter">
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button class="btn btn-secondary w-100" id="applyFilters">
-                        <i class="fas fa-filter me-2"></i>Apply Filters
+                        <i class="fas fa-filter me-2"></i>Appliquer les Filtres
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Appointments Table -->
+    <!-- Tableau des Rendez-vous -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -68,11 +68,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Patient Name</th>
-                            <th>Blood Type</th>
-                            <th>Quantity (ml)</th>
-                            <th>Request Date</th>
-                            <th>Status</th>
+                            <th>Nom du Patient</th>
+                            <th>Groupe Sanguin</th>
+                            <th>Quantité (ml)</th>
+                            <th>Date de Demande</th>
+                            <th>Statut</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -88,11 +88,11 @@
                             <td>{{ appointment.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
                             <td>
                                 {% if appointment.status == 'Pending' %}
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning">En Attente</span>
                                 {% elif appointment.status == 'Approved' %}
-                                    <span class="badge bg-success">Approved</span>
+                                    <span class="badge bg-success">Approuvé</span>
                                 {% elif appointment.status == 'Completed' %}
-                                    <span class="badge bg-primary">Completed</span>
+                                    <span class="badge bg-primary">Terminé</span>
                                 {% else %}
                                     <span class="badge bg-secondary">{{ appointment.status }}</span>
                                 {% endif %}
@@ -114,29 +114,29 @@
                                     </button>
                                 </div>
 
-                                <!-- View Modal -->
+                                <!-- Modal de Visualisation -->
                                 <div class="modal fade" id="viewModal{{ appointment.id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Appointment Details</h5>
+                                                <h5 class="modal-title">Détails du Rendez-vous</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <dl class="row">
-                                                    <dt class="col-sm-4">Patient Name</dt>
+                                                    <dt class="col-sm-4">Nom du Patient</dt>
                                                     <dd class="col-sm-8">{{ appointment.patient.name }}</dd>
 
-                                                    <dt class="col-sm-4">Blood Type</dt>
+                                                    <dt class="col-sm-4">Groupe Sanguin</dt>
                                                     <dd class="col-sm-8">{{ appointment.blood_type }}</dd>
 
-                                                    <dt class="col-sm-4">Quantity</dt>
+                                                    <dt class="col-sm-4">Quantité</dt>
                                                     <dd class="col-sm-8">{{ appointment.quantity_ml }} ml</dd>
 
-                                                    <dt class="col-sm-4">Request Date</dt>
+                                                    <dt class="col-sm-4">Date de Demande</dt>
                                                     <dd class="col-sm-8">{{ appointment.request_date.strftime('%Y-%m-%d %H:%M') }}</dd>
 
-                                                    <dt class="col-sm-4">Status</dt>
+                                                    <dt class="col-sm-4">Statut</dt>
                                                     <dd class="col-sm-8">{{ appointment.status }}</dd>
 
                                                     <dt class="col-sm-4">Contact</dt>
@@ -144,7 +144,7 @@
                                                 </dl>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                                             </div>
                                         </div>
                                     </div>
@@ -159,18 +159,18 @@
     </div>
 </div>
 
-<!-- Export Modal -->
+<!-- Modal d'Exportation -->
 <div class="modal fade" id="exportModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Export Appointments</h5>
+                <h5 class="modal-title">Exporter les Rendez-vous</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label class="form-label">Date Range</label>
+                        <label class="form-label">Période</label>
                         <div class="row g-2">
                             <div class="col">
                                 <input type="date" class="form-control" id="exportStartDate">
@@ -191,9 +191,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <button type="button" class="btn btn-primary" onclick="exportData()">
-                    <i class="fas fa-download me-2"></i>Export
+                    <i class="fas fa-download me-2"></i>Exporter
                 </button>
             </div>
         </div>
@@ -205,7 +205,7 @@
 {% block extra_js %}
 <script>
 function updateStatus(appointmentId, status) {
-    if (confirm('Are you sure you want to update this appointment status?')) {
+    if (confirm('Êtes-vous sûr de vouloir mettre à jour le statut de ce rendez-vous ?')) {
         fetch(`/appointment/${appointmentId}/status`, {
             method: 'POST',
             headers: {
@@ -218,7 +218,7 @@ function updateStatus(appointmentId, status) {
             if (data.success) {
                 location.reload();
             } else {
-                alert('Error updating status');
+                alert('Erreur lors de la mise à jour du statut');
             }
         });
     }
@@ -245,14 +245,14 @@ function exportData() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `appointments-${startDate}-${endDate}.${format}`;
+        a.download = `rendez-vous-${startDate}-${endDate}.${format}`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
     });
 }
 
-// Filter functionality
+// Fonctionnalité de filtrage
 document.getElementById('applyFilters').addEventListener('click', function() {
     const status = document.getElementById('statusFilter').value;
     const bloodType = document.getElementById('bloodTypeFilter').value;

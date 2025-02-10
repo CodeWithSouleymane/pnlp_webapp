@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Record Donation{% endblock %}
+{% block title %}Enregistrer un Don{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Record Blood Donation</h5>
+                    <h5 class="card-title mb-0">Enregistrer un Don de Sang</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST">
@@ -20,10 +20,10 @@
                         <div class="mb-3">
                             {{ form.quantity_ml.label(class="form-label") }}
                             {{ form.quantity_ml(class="form-control") }}
-                            <div class="form-text">Standard donation is typically 450ml</div>
+                            <div class="form-text">Le don standard est généralement de 450ml</div>
                         </div>
                         {{ form.submit(class="btn btn-primary") }}
-                        <a href="{{ url_for('donors') }}" class="btn btn-secondary">Back to Donors</a>
+                        <a href="{{ url_for('donors') }}" class="btn btn-secondary">Retour aux Donneurs</a>
                     </form>
                 </div>
             </div>
@@ -34,14 +34,14 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Donor Information</h5>
+                    <h5 class="card-title mb-0">Informations du Donneur</h5>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-4">Name</dt>
+                        <dt class="col-sm-4">Nom</dt>
                         <dd class="col-sm-8">{{ donor.name }}</dd>
 
-                        <dt class="col-sm-4">Blood Type</dt>
+                        <dt class="col-sm-4">Groupe Sanguin</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-primary">{{ donor.blood_type }}</span>
                         </dd>
@@ -49,25 +49,25 @@
                         <dt class="col-sm-4">Contact</dt>
                         <dd class="col-sm-8">{{ donor.contact }}</dd>
 
-                        <dt class="col-sm-4">Last Donation</dt>
+                        <dt class="col-sm-4">Dernier Don</dt>
                         <dd class="col-sm-8">
                             {% if donor.last_donation %}
                                 {{ donor.last_donation.strftime('%Y-%m-%-d') }}
-                                ({{ (now - donor.last_donation).days }} days ago)
+                                (il y a {{ (now - donor.last_donation).days }} jours)
                             {% else %}
-                                No previous donations
+                                Aucun don précédent
                             {% endif %}
                         </dd>
                     </dl>
 
                     <!-- Previous Donations -->
-                    <h6 class="mt-4">Donation History</h6>
+                    <h6 class="mt-4">Historique des Dons</h6>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Quantity</th>
+                                    <th>Quantité</th>
                                 </tr>
                             </thead>
                             <tbody>

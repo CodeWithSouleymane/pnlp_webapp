@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Blood Request{% endblock %}
+{% block title %}Demande de Sang{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Create Blood Request</h5>
+                    <h5 class="card-title mb-0">Créer une Demande de Sang</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST">
@@ -22,7 +22,7 @@
                             {{ form.blood_type(class="form-control") }}
                             {% if compatible_types %}
                             <div class="form-text">
-                                Compatible blood types: {{ compatible_types|join(', ') }}
+                                Groupes sanguins compatibles : {{ compatible_types|join(', ') }}
                             </div>
                             {% endif %}
                         </div>
@@ -31,25 +31,25 @@
                             {{ form.quantity_ml(class="form-control") }}
                         </div>
                         {{ form.submit(class="btn btn-primary") }}
-                        <a href="{{ url_for('patients') }}" class="btn btn-secondary">Back to Patients</a>
+                        <a href="{{ url_for('patients') }}" class="btn btn-secondary">Retour aux Patients</a>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Patient Information -->
+        <!-- Informations du Patient -->
         {% if patient %}
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Patient Information</h5>
+                    <h5 class="card-title mb-0">Informations du Patient</h5>
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="col-sm-4">Name</dt>
+                        <dt class="col-sm-4">Nom</dt>
                         <dd class="col-sm-8">{{ patient.name }}</dd>
 
-                        <dt class="col-sm-4">Blood Type</dt>
+                        <dt class="col-sm-4">Groupe Sanguin</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-primary">{{ patient.blood_type }}</span>
                         </dd>
@@ -58,15 +58,15 @@
                         <dd class="col-sm-8">{{ patient.contact }}</dd>
                     </dl>
 
-                    <!-- Blood Inventory Status -->
-                    <h6 class="mt-4">Available Blood Inventory</h6>
+                    <!-- État de l'Inventaire de Sang -->
+                    <h6 class="mt-4">Inventaire de Sang Disponible</h6>
                     <div class="table-responsive">
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Blood Type</th>
-                                    <th>Available Quantity</th>
-                                    <th>Status</th>
+                                    <th>Groupe Sanguin</th>
+                                    <th>Quantité Disponible</th>
+                                    <th>État</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,11 +78,11 @@
                                     <td>{{ quantity }}ml</td>
                                     <td>
                                         {% if quantity > 1000 %}
-                                        <span class="badge bg-success">Sufficient</span>
+                                        <span class="badge bg-success">Suffisant</span>
                                         {% elif quantity > 500 %}
-                                        <span class="badge bg-warning">Moderate</span>
+                                        <span class="badge bg-warning">Modéré</span>
                                         {% else %}
-                                        <span class="badge bg-danger">Low</span>
+                                        <span class="badge bg-danger">Faible</span>
                                         {% endif %}
                                     </td>
                                 </tr>

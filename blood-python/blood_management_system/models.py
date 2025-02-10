@@ -12,7 +12,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(20), nullable=False)  # 'admin', 'donor', or 'patient'
+    name = db.Column(db.String(100), nullable=True)  # Optional name field
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+    # Relationships
+    donor = db.relationship('Donor', backref='user', uselist=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -25,9 +29,10 @@ class User(UserMixin, db.Model):
 
 class Donor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    phone = db.Column(db.String(20), unique=True, nullable=False)
+    phone = db.Column(db.String(9), unique=True, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     blood_type = db.Column(db.String(5), nullable=False)
     weight = db.Column(db.Float, nullable=False)
@@ -45,7 +50,7 @@ class Donor(db.Model):
     
     # Emergency Contact
     emergency_contact_name = db.Column(db.String(100), nullable=False)
-    emergency_contact_phone = db.Column(db.String(20), nullable=False)
+    emergency_contact_phone = db.Column(db.String(9), nullable=False)
     emergency_contact_relationship = db.Column(db.String(50), nullable=False)
     
     # Donation History
@@ -102,7 +107,7 @@ class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    phone = db.Column(db.String(20), unique=True, nullable=False)
+    phone = db.Column(db.String(9), unique=True, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     blood_type = db.Column(db.String(5), nullable=False)
     
@@ -118,7 +123,7 @@ class Patient(db.Model):
     
     # Emergency Contact
     emergency_contact_name = db.Column(db.String(100), nullable=False)
-    emergency_contact_phone = db.Column(db.String(20), nullable=False)
+    emergency_contact_phone = db.Column(db.String(9), nullable=False)
     emergency_contact_relationship = db.Column(db.String(50), nullable=False)
     
     # System Fields

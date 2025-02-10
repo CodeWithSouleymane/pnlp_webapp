@@ -12,6 +12,13 @@ from sqlalchemy import func, extract, case
 import io
 import csv
 
+def send_welcome_email(email, username, password):
+    # TODO: Implement actual email sending
+    # For now, we'll just log the information
+    print(f"Welcome email would be sent to {email}")
+    print(f"Username: {username}")
+    print(f"Initial password: {password}")
+
 def register_routes(app):
     # Initialize models
     user_model = User
@@ -77,8 +84,22 @@ def register_routes(app):
         
         if form.validate_on_submit():
             try:
-                # Create new donor
-                donor = donor_model(
+                # First create the user account
+                user = User(
+                    username=form.email.data.split('@')[0],  # Use part before @ as username
+                    email=form.email.data,
+                    role='donor',
+                    name=form.name.data
+                )
+                user.set_password(form.phone.data[-6:])  # Use last 6 digits of phone as initial password
+                
+                # Add and flush the user to get their ID
+                db.session.add(user)
+                db.session.flush()
+                
+                # Now create the donor with the user_id
+                donor = Donor(
+                    user_id=user.id,  # Link to the user
                     name=form.name.data,
                     email=form.email.data,
                     phone=form.phone.data,
@@ -96,31 +117,27 @@ def register_routes(app):
                     emergency_contact_phone=form.emergency_contact_phone.data,
                     emergency_contact_relationship=form.emergency_contact_relationship.data,
                     registration_date=datetime.now(),
-                    status='Pending'  # New donors start with pending status
+                    status='Pending'
                 )
                 
-                # Create user account for donor
-                user = user_model(
-                    username=form.email.data.split('@')[0],  # Use part before @ as username
-                    email=form.email.data,
-                    role='donor'
-                )
-                user.set_password(form.phone.data[-6:])  # Use last 6 digits of phone as initial password
-                
-                db.session.add(user)
+                # Add the donor and commit both changes
                 db.session.add(donor)
                 db.session.commit()
                 
                 # Send welcome email
-                send_welcome_email(donor.email, user.username, form.phone.data[-6:])
+                try:
+                    send_welcome_email(donor.email, user.username, form.phone.data[-6:])
+                except Exception as email_error:
+                    app.logger.warning(f'Error sending welcome email: {str(email_error)}')
+                    # Don't rollback for email errors, just log them
                 
-                flash('Registration successful! Please check your email for login credentials.', 'success')
+                flash('Inscription réussie! Veuillez vérifier votre email pour vos identifiants de connexion.', 'success')
                 return redirect(url_for('login'))
                 
             except Exception as e:
                 db.session.rollback()
-                flash('An error occurred during registration. Please try again.', 'danger')
                 app.logger.error(f'Donor registration error: {str(e)}')
+                flash(f'Une erreur est survenue lors de l\'inscription: {str(e)}', 'danger')
         
         return render_template('donor_register.html', form=form)
 
@@ -131,8 +148,8 @@ def register_routes(app):
         if form.validate_on_submit():
             try:
                 # Create new patient
-                patient = patient_model(
-                    name=form.name.data,
+                patient = Patient(
+                    name=form.first_name.data + ' ' + form.last_name.data,
                     email=form.email.data,
                     phone=form.phone.data,
                     date_of_birth=form.date_of_birth.data,
@@ -151,24 +168,29 @@ def register_routes(app):
                 )
                 
                 # Create user account for patient
-                user = user_model(
+                user = User(
                     username=form.email.data.split('@')[0],  # Use part before @ as username
                     email=form.email.data,
-                    role='patient'
+                    role='patient',
+                    name=patient.name
                 )
                 user.set_password(form.password.data)
                 
                 db.session.add(user)
+                db.session.flush()  # Get the user ID
+                
+                # Link patient to user
+                patient.user_id = user.id
                 db.session.add(patient)
                 db.session.commit()
                 
-                flash('Registration successful! You can now login with your email and password.', 'success')
+                flash('Inscription réussie! Vous pouvez maintenant vous connecter avec votre email et mot de passe.', 'success')
                 return redirect(url_for('login'))
                 
             except Exception as e:
                 db.session.rollback()
-                flash('An error occurred during registration. Please try again.', 'danger')
                 app.logger.error(f'Patient registration error: {str(e)}')
+                flash(f'Une erreur est survenue lors de l\'inscription: {str(e)}', 'danger')
         
         return render_template('register_patient.html', form=form)
 
@@ -803,10 +825,5 @@ def register_routes(app):
         if diff.seconds > 60:
             return f"{diff.seconds // 60}m ago"
         return "just now"
-
-    def send_welcome_email(email, username, password):
-        # TODO: Implement email sending functionality
-        # For now, just log the credentials
-        print(f'Welcome email would be sent to {email} with username: {username} and password: {password}')
 
     return app
