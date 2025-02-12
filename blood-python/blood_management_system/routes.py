@@ -147,9 +147,23 @@ def register_routes(app):
         
         if form.validate_on_submit():
             try:
+                # Create user account for patient first
+                user = User(
+                    username=form.email.data.split('@')[0],  # Use part before @ as username
+                    email=form.email.data,
+                    role='patient',
+                    name=f"{form.first_name.data} {form.last_name.data}"  # Full name for user
+                )
+                user.set_password(form.password.data)
+                
+                db.session.add(user)
+                db.session.flush()  # Get the user ID
+                
                 # Create new patient
                 patient = Patient(
-                    name=form.first_name.data + ' ' + form.last_name.data,
+                    user_id=user.id,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
                     email=form.email.data,
                     phone=form.phone.data,
                     date_of_birth=form.date_of_birth.data,
@@ -167,20 +181,6 @@ def register_routes(app):
                     status='Active'  # Patients start with active status
                 )
                 
-                # Create user account for patient
-                user = User(
-                    username=form.email.data.split('@')[0],  # Use part before @ as username
-                    email=form.email.data,
-                    role='patient',
-                    name=patient.name
-                )
-                user.set_password(form.password.data)
-                
-                db.session.add(user)
-                db.session.flush()  # Get the user ID
-                
-                # Link patient to user
-                patient.user_id = user.id
                 db.session.add(patient)
                 db.session.commit()
                 
@@ -679,23 +679,28 @@ def register_routes(app):
             flash('Access denied.', 'danger')
             return redirect(url_for('index'))
         
-        form = PatientRegistrationForm()
+        form = PatientForm()
         if form.validate_on_submit():
-            patient = patient_model(
-                username=form.email.data,  # Using email as username
-                email=form.email.data,
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                contact=form.contact.data,
-                role='patient'
-            )
-            patient.set_password('default123')  # Set a default password
-            db.session.add(patient)
-            db.session.commit()
-            flash('Patient registered successfully!', 'success')
-            return redirect(url_for('patients'))
-            
-        patients = patient_model.query.all()
+            try:
+                # Create new patient
+                patient = Patient(
+                    name=form.name.data,
+                    blood_type=form.blood_type.data,
+                    contact=form.contact.data
+                )
+                
+                db.session.add(patient)
+                db.session.commit()
+                
+                flash('Patient registered successfully!', 'success')
+                return redirect(url_for('patients'))
+                
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error registering patient: {str(e)}', 'danger')
+                return redirect(url_for('patients'))
+        
+        patients = Patient.query.all()
         return render_template('patients.html', form=form, patients=patients)
 
     @app.route('/patient/<int:patient_id>')

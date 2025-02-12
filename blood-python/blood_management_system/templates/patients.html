@@ -15,16 +15,12 @@
                     <form method="POST" action="{{ url_for('patients') }}">
                         {{ form.hidden_tag() }}
                         <div class="mb-3">
-                            {{ form.first_name.label(class="form-label") }}
-                            {{ form.first_name(class="form-control") }}
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
                         </div>
                         <div class="mb-3">
-                            {{ form.last_name.label(class="form-label") }}
-                            {{ form.last_name(class="form-control") }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.email.label(class="form-label") }}
-                            {{ form.email(class="form-control") }}
+                            {{ form.blood_type.label(class="form-label") }}
+                            {{ form.blood_type(class="form-control") }}
                         </div>
                         <div class="mb-3">
                             {{ form.contact.label(class="form-label") }}
@@ -94,17 +90,13 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for request in patient.requests %}
+                                                        {% for request in patient.blood_requests %}
                                                         <tr>
                                                             <td>{{ request.request_date.strftime('%Y-%m-%d') }}</td>
+                                                            <td>{{ request.blood_type }}</td>
+                                                            <td>{{ request.quantity_ml }} ml</td>
                                                             <td>
-                                                                <span class="badge bg-primary">{{ request.blood_type }}</span>
-                                                            </td>
-                                                            <td>{{ request.quantity_ml }}ml</td>
-                                                            <td>
-                                                                <span class="badge bg-{{ 'success' if request.status == 'Completed' 
-                                                                    else 'warning' if request.status == 'Pending' 
-                                                                    else 'primary' }}">
+                                                                <span class="badge bg-{{ 'success' if request.status == 'Completed' else 'warning' }}">
                                                                     {{ request.status }}
                                                                 </span>
                                                             </td>

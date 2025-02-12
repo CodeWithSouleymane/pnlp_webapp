@@ -42,6 +42,20 @@
                                 {% endif %}
                             </div>
                             <div class="col-md-6 mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder="votre.email@example.com") }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback">{{ form.email.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.phone.label(class="form-label") }}
+                                {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else ""), placeholder="77XXXXXXX") }}
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback">{{ form.phone.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 {{ form.date_of_birth.label(class="form-label") }}
                                 {{ form.date_of_birth(class="form-control" + (" is-invalid" if form.date_of_birth.errors else ""), type="date") }}
                                 {% if form.date_of_birth.errors %}
@@ -55,24 +69,113 @@
                                     <div class="invalid-feedback">{{ form.blood_type.errors[0] }}</div>
                                 {% endif %}
                             </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.contact.label(class="form-label") }}
-                                {{ form.contact(class="form-control" + (" is-invalid" if form.contact.errors else ""), placeholder="Votre numéro de téléphone") }}
-                                {% if form.contact.errors %}
-                                    <div class="invalid-feedback">{{ form.contact.errors[0] }}</div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <h4 class="mb-3">Informations Médicales</h4>
+                            <div class="col-12 mb-3">
+                                {{ form.medical_conditions.label(class="form-label") }}
+                                {{ form.medical_conditions(class="form-control" + (" is-invalid" if form.medical_conditions.errors else ""), rows="3") }}
+                                {% if form.medical_conditions.errors %}
+                                    <div class="invalid-feedback">{{ form.medical_conditions.errors[0] }}</div>
                                 {% endif %}
                             </div>
                             <div class="col-12 mb-3">
+                                {{ form.allergies.label(class="form-label") }}
+                                {{ form.allergies(class="form-control" + (" is-invalid" if form.allergies.errors else ""), rows="3") }}
+                                {% if form.allergies.errors %}
+                                    <div class="invalid-feedback">{{ form.allergies.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12 mb-3">
+                                {{ form.current_medications.label(class="form-label") }}
+                                {{ form.current_medications(class="form-control" + (" is-invalid" if form.current_medications.errors else ""), rows="3") }}
+                                {% if form.current_medications.errors %}
+                                    <div class="invalid-feedback">{{ form.current_medications.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <h4 class="mb-3">Adresse</h4>
+                            <div class="col-12 mb-3">
                                 {{ form.address.label(class="form-label") }}
-                                {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), rows="3", placeholder="Votre adresse complète") }}
+                                {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), placeholder="Votre adresse complète") }}
                                 {% if form.address.errors %}
                                     <div class="invalid-feedback">{{ form.address.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.city.label(class="form-label") }}
+                                {{ form.city(class="form-control" + (" is-invalid" if form.city.errors else ""), placeholder="Votre ville") }}
+                                {% if form.city.errors %}
+                                    <div class="invalid-feedback">{{ form.city.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.postal_code.label(class="form-label") }}
+                                {{ form.postal_code(class="form-control" + (" is-invalid" if form.postal_code.errors else ""), placeholder="Code postal") }}
+                                {% if form.postal_code.errors %}
+                                    <div class="invalid-feedback">{{ form.postal_code.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <h4 class="mb-3">Contact d'Urgence</h4>
+                            <div class="col-md-6 mb-3">
+                                {{ form.emergency_contact_name.label(class="form-label") }}
+                                {{ form.emergency_contact_name(class="form-control" + (" is-invalid" if form.emergency_contact_name.errors else ""), placeholder="Nom du contact") }}
+                                {% if form.emergency_contact_name.errors %}
+                                    <div class="invalid-feedback">{{ form.emergency_contact_name.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.emergency_contact_phone.label(class="form-label") }}
+                                {{ form.emergency_contact_phone(class="form-control" + (" is-invalid" if form.emergency_contact_phone.errors else ""), placeholder="77XXXXXXX") }}
+                                {% if form.emergency_contact_phone.errors %}
+                                    <div class="invalid-feedback">{{ form.emergency_contact_phone.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12 mb-3">
+                                {{ form.emergency_contact_relationship.label(class="form-label") }}
+                                {{ form.emergency_contact_relationship(class="form-control" + (" is-invalid" if form.emergency_contact_relationship.errors else ""), placeholder="Relation avec le contact") }}
+                                {% if form.emergency_contact_relationship.errors %}
+                                    <div class="invalid-feedback">{{ form.emergency_contact_relationship.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <h4 class="mb-3">Mot de Passe</h4>
+                            <div class="col-md-6 mb-3">
+                                {{ form.password.label(class="form-label") }}
+                                {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else ""), placeholder="Votre mot de passe") }}
+                                {% if form.password.errors %}
+                                    <div class="invalid-feedback">{{ form.password.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.confirm_password.label(class="form-label") }}
+                                {{ form.confirm_password(class="form-control" + (" is-invalid" if form.confirm_password.errors else ""), placeholder="Confirmez votre mot de passe") }}
+                                {% if form.confirm_password.errors %}
+                                    <div class="invalid-feedback">{{ form.confirm_password.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.consent(class="form-check-input" + (" is-invalid" if form.consent.errors else "")) }}
+                                {{ form.consent.label(class="form-check-label") }}
+                                {% if form.consent.errors %}
+                                    <div class="invalid-feedback">{{ form.consent.errors[0] }}</div>
                                 {% endif %}
                             </div>
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">S'inscrire</button>
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
                         </div>
                     </form>
                 </div>
@@ -85,53 +188,14 @@
 {% block extra_css %}
 <style>
 .card {
-    border: none;
     border-radius: 15px;
 }
-
-.form-control, .form-select {
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
 }
-
 .form-control:focus, .form-select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.btn-primary {
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
-}
-
-h4 {
-    color: #0d6efd;
-    font-size: 1.25rem;
-    font-weight: 600;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #e9ecef;
-}
-
-.invalid-feedback {
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
-
-.form-check-input:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-.alert {
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
 }
 </style>
 {% endblock %}

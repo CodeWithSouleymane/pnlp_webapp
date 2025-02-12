@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     
     # Relationships
     donor = db.relationship('Donor', backref='user', uselist=False)
+    patient = db.relationship('Patient', backref='user', uselist=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -104,35 +105,39 @@ class Donor(db.Model):
         return history
 
 class Patient(db.Model):
+    """Patient model for storing patient information"""
+    __tablename__ = 'patients'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(9), unique=True, nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     blood_type = db.Column(db.String(5), nullable=False)
-    
-    # Medical Information
-    medical_conditions = db.Column(db.Text)
-    allergies = db.Column(db.Text)
-    current_medications = db.Column(db.Text)
-    
-    # Address Information
+    medical_conditions = db.Column(db.Text, nullable=True)
+    allergies = db.Column(db.Text, nullable=True)
+    current_medications = db.Column(db.Text, nullable=True)
     address = db.Column(db.String(200), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     postal_code = db.Column(db.String(10), nullable=False)
-    
-    # Emergency Contact
     emergency_contact_name = db.Column(db.String(100), nullable=False)
     emergency_contact_phone = db.Column(db.String(9), nullable=False)
     emergency_contact_relationship = db.Column(db.String(50), nullable=False)
-    
-    # System Fields
     registration_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    status = db.Column(db.String(20), nullable=False, default='Active')  # Active, Inactive
+    status = db.Column(db.String(20), nullable=False, default='Active')
+
+    # Relationships
     blood_requests = db.relationship('BloodRequest', backref='patient', lazy=True)
+    user = db.relationship('User', backref=db.backref('patient', uselist=False))
 
     def __repr__(self):
-        return f'<Patient {self.name}>'
+        return f'<Patient {self.first_name} {self.last_name}>'
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 class Donation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
