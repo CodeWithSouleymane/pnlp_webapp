@@ -109,7 +109,8 @@
                             {% if progress > 100 %}{% set progress = 100 %}{% endif %}
                             <div class="progress-bar {% if item.status == 'Critical' %}bg-danger{% elif item.status == 'Warning' %}bg-warning{% else %}bg-success{% endif %}" 
                                  role="progressbar" 
-                                 style="width: {{ progress }}%" 
+                                 style="width: {{ progress }}
+                                 %" 
                                  aria-valuenow="{{ item.quantity }}" 
                                  aria-valuemin="0" 
                                  aria-valuemax="2000">
