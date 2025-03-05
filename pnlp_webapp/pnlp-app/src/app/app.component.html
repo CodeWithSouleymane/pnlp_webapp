@@ -1,0 +1,77 @@
+<header class="pnlp-header">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="#">
+        <img src="assets/images/logo-pnlp.png" alt="PNLP Logo" height="60">
+        <span class="ms-2">Programme National de Lutte contre le Paludisme</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/about" routerLinkActive="active">À propos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/statistics" routerLinkActive="active">Statistiques</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/resources" routerLinkActive="active">Ressources</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white ms-3" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="pnlp-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <h5>À propos du PNLP</h5>
+        <p>Le Programme National de Lutte contre le Paludisme (PNLP) est chargé de la coordination des interventions de lutte contre le paludisme au Sénégal.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h5>Liens rapides</h5>
+        <ul class="footer-links">
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Statistiques</a></li>
+          <li><a href="#">Ressources</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h5>Contact</h5>
+        <ul class="contact-info">
+          <li><i class="bi bi-geo-alt"></i> Fann Résidence, Rue Aimé Césaire, Dakar, Sénégal</li>
+          <li><i class="bi bi-telephone"></i> +221 33 869 09 61</li>
+          <li><i class="bi bi-envelope"></i> contact&#64;pnlp.sn</li>
+          <li><i class="bi bi-globe"></i> www.pnlp.sn</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <p class="copyright"> 2025 Programme National de Lutte contre le Paludisme. Tous droits réservés.</p>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,110 @@
+/* PNLP Theme Colors */
+:host {
+  --primary-color: #0d8c3e; /* PNLP Green */
+  --secondary-color: #0066cc; /* Blue */
+  --accent-color: #ffc107; /* Yellow/Gold */
+  --text-color: #333;
+  --light-bg: #f8f9fa;
+  --dark-bg: #0a6e31; /* Darker green */
+}
+
+/* Global Styles */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Header Styles */
+.pnlp-header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  
+  .navbar-brand {
+    font-weight: bold;
+  }
+  
+  .nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+    
+    &:hover, &.active {
+      color: var(--primary-color);
+    }
+  }
+}
+
+/* Footer Styles */
+.pnlp-footer {
+  background-color: var(--dark-bg);
+  color: white;
+  padding: 40px 0 20px;
+  margin-top: 50px;
+  
+  h5 {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+    
+    .social-icon {
+      color: white;
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+      
+      &:hover {
+        color: var(--accent-color);
+      }
+    }
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding-left: 0;
+    
+    li {
+      margin-bottom: 10px;
+      
+      a {
+        color: white;
+        transition: color 0.3s ease;
+        
+        &:hover {
+          color: var(--accent-color);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  
+  .contact-info {
+    list-style: none;
+    padding-left: 0;
+    
+    li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      
+      i {
+        margin-right: 10px;
+        color: var(--accent-color);
+      }
+    }
+  }
+  
+  .copyright {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+}

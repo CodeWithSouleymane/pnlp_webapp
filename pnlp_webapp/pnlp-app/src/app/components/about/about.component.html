@@ -1,0 +1,190 @@
+<!-- Page Header -->
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>À propos du PNLP</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">À propos</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About PNLP Section -->
+<section class="about-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="about-text">
+          <h2>Notre mission</h2>
+          <p class="lead">Le Programme National de Lutte contre le Paludisme (PNLP) a pour mission de réduire la morbidité et la mortalité liées au paludisme au Sénégal.</p>
+          
+          <p>Créé en 1995, le PNLP est l'organe du Ministère de la Santé et de l'Action Sociale chargé de la coordination des activités de lutte contre le paludisme au Sénégal. Il élabore les politiques et stratégies nationales, assure la mobilisation des ressources et le suivi-évaluation des interventions.</p>
+          
+          <p>Le PNLP travaille en étroite collaboration avec les partenaires techniques et financiers, les collectivités territoriales, les organisations de la société civile et les communautés pour mettre en œuvre les interventions de lutte contre le paludisme.</p>
+          
+          <h3 class="mt-4">Vision</h3>
+          <p>Un Sénégal sans paludisme.</p>
+          
+          <h3 class="mt-4">Valeurs</h3>
+          <ul>
+            <li><strong>Équité :</strong> Garantir l'accès aux interventions de lutte contre le paludisme à toutes les populations à risque.</li>
+            <li><strong>Excellence :</strong> Promouvoir des interventions de qualité basées sur des données probantes.</li>
+            <li><strong>Transparence :</strong> Assurer une gestion transparente des ressources et une communication ouverte avec les parties prenantes.</li>
+            <li><strong>Collaboration :</strong> Travailler en partenariat avec tous les acteurs impliqués dans la lutte contre le paludisme.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="about-sidebar">
+          <div class="sidebar-card">
+            <h4>Contactez-nous</h4>
+            <ul class="contact-info">
+              <li><i class="bi bi-geo-alt"></i> Fann Résidence, Rue Aimé Césaire, Dakar, Sénégal</li>
+              <li><i class="bi bi-telephone"></i> +221 33 869 09 61</li>
+              <li><i class="bi bi-envelope"></i> contact&#64;pnlp.sn</li>
+              <li><i class="bi bi-globe"></i> www.pnlp.sn</li>
+            </ul>
+          </div>
+          
+          <div class="sidebar-card mt-4">
+            <h4>Documents clés</h4>
+            <ul class="document-links">
+              <li><a href="#"><i class="bi bi-file-earmark-pdf"></i> Plan Stratégique National 2021-2025</a></li>
+              <li><a href="#"><i class="bi bi-file-earmark-pdf"></i> Rapport annuel 2024</a></li>
+              <li><a href="#"><i class="bi bi-file-earmark-pdf"></i> Guide de prise en charge</a></li>
+              <li><a href="#"><i class="bi bi-file-earmark-pdf"></i> Politique nationale de lutte contre le paludisme</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Strategic Objectives Section -->
+<section class="objectives-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Nos objectifs stratégiques</h2>
+      <p>Les axes d'intervention prioritaires du PNLP pour éliminer le paludisme au Sénégal</p>
+    </div>
+    <div class="row">
+      @for (objective of objectives; track objective) {
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="objective-card">
+            <div class="objective-icon">
+              <i class="bi {{ objective.icon }}"></i>
+            </div>
+            <h4>{{ objective.title }}</h4>
+            <p>{{ objective.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="timeline-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Notre histoire</h2>
+      <p>Les grandes étapes de la lutte contre le paludisme au Sénégal</p>
+    </div>
+    <div class="timeline">
+      @for (milestone of milestones; track milestone; let i = $index) {
+        <div class="timeline-item" [class.right]="i % 2 !== 0">
+          <div class="timeline-badge">{{ milestone.year }}</div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4>{{ milestone.title }}</h4>
+            </div>
+            <div class="timeline-body">
+              <p>{{ milestone.description }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Notre équipe</h2>
+      <p>Une équipe dévouée à l'élimination du paludisme au Sénégal</p>
+    </div>
+    <div class="row">
+      @for (member of teamMembers; track member) {
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="team-card">
+            <div class="team-img">
+              <img [src]="member.image" [alt]="member.name" class="img-fluid">
+            </div>
+            <div class="team-content">
+              <h4>{{ member.name }}</h4>
+              <p class="position">{{ member.position }}</p>
+              <p class="bio">{{ member.bio }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners-about-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Nos partenaires</h2>
+      <p>Le PNLP travaille en étroite collaboration avec de nombreux partenaires nationaux et internationaux</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="partner-category">
+          <h4><i class="bi bi-globe"></i> Partenaires internationaux</h4>
+          <ul class="partner-list">
+            <li>Organisation Mondiale de la Santé (OMS)</li>
+            <li>Fonds Mondial de lutte contre le Sida, la Tuberculose et le Paludisme</li>
+            <li>USAID / PMI (President's Malaria Initiative)</li>
+            <li>UNICEF</li>
+            <li>Banque Mondiale</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="partner-category">
+          <h4><i class="bi bi-building"></i> Partenaires nationaux</h4>
+          <ul class="partner-list">
+            <li>Ministère de la Santé et de l'Action Sociale</li>
+            <li>Directions et services du Ministère de la Santé</li>
+            <li>Collectivités territoriales</li>
+            <li>Universités et instituts de recherche</li>
+            <li>Secteur privé</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="partner-category">
+          <h4><i class="bi bi-people"></i> Société civile</h4>
+          <ul class="partner-list">
+            <li>ONG nationales et internationales</li>
+            <li>Associations communautaires</li>
+            <li>Organisations religieuses</li>
+            <li>Médias</li>
+            <li>Leaders d'opinion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

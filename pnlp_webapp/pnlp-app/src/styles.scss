@@ -1,0 +1,83 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* CSS Variables */
+:root {
+  --primary-color: #0d8c3e; /* PNLP Green */
+  --primary-color-dark: #076e30; /* Darker shade of PNLP Green */
+  --secondary-color: #0066cc; /* Blue */
+  --accent-color: #ffc107; /* Yellow/Gold */
+  --text-color: #333333;
+  --light-bg: #f8f9fa;
+  --border-color: #dee2e6;
+  --footer-bg: #0a6e31; /* Darker green for footer */
+}
+
+/* Global Styles */
+body {
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: var(--primary-color-dark);
+  }
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  
+  &.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    
+    &:hover, &:focus, &:active {
+      background-color: var(--primary-color-dark);
+      border-color: var(--primary-color-dark);
+    }
+  }
+  
+  &.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    
+    &:hover, &:focus {
+      background-color: var(--primary-color);
+      color: white;
+    }
+  }
+}
+
+.section-padding {
+  padding: 80px 0;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}

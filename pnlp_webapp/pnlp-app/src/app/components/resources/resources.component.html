@@ -1,0 +1,195 @@
+<!-- Page Header -->
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Ressources et publications</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ressources</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resources Section -->
+<section class="resources-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Centre de documentation</h2>
+      <p>Accédez à nos publications, rapports, guides et outils de formation</p>
+    </div>
+    
+    <!-- Filter Categories -->
+    <div class="filter-categories mb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="category-tabs">
+            <ul class="nav nav-pills justify-content-center">
+              @for (category of categories; track category) {
+                <li class="nav-item">
+                  <button class="nav-link" 
+                          [class.active]="activeCategory === category.id"
+                          (click)="filterByCategory(category.id)">
+                    {{ category.name }}
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Resources Grid -->
+    <div class="resources-grid">
+      <div class="row">
+        @for (resource of filteredResources; track resource) {
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="resource-card">
+              <div class="resource-thumbnail">
+                <img [src]="resource.thumbnail" [alt]="resource.title" class="img-fluid">
+                <div class="resource-category">{{ getCategoryName(resource.category) }}</div>
+              </div>
+              <div class="resource-content">
+                <h3 class="resource-title">{{ resource.title }}</h3>
+                <p class="resource-description">{{ resource.description }}</p>
+                <div class="resource-meta">
+                  <div class="meta-item">
+                    <i class="bi bi-file-earmark"></i>
+                    <span>{{ resource.fileType }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="bi bi-hdd"></i>
+                    <span>{{ resource.fileSize }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <i class="bi bi-calendar3"></i>
+                    <span>{{ resource.date }}</span>
+                  </div>
+                </div>
+                <a [href]="resource.downloadUrl" class="btn btn-primary btn-download">
+                  <i class="bi bi-download"></i> Télécharger
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <!-- No Results Message -->
+    @if (filteredResources.length === 0) {
+      <div class="no-results text-center my-5">
+        <i class="bi bi-search display-1 text-muted"></i>
+        <h3 class="mt-3">Aucun document trouvé</h3>
+        <p>Aucun document ne correspond à votre sélection. Veuillez essayer une autre catégorie.</p>
+        <button class="btn btn-outline-primary" (click)="filterByCategory('all')">
+          Voir tous les documents
+        </button>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- Request Documents Section -->
+<section class="request-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="request-card">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h3>Vous ne trouvez pas ce que vous cherchez ?</h3>
+              <p>Contactez notre équipe pour demander des documents spécifiques ou pour toute autre information.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <a href="#" class="btn btn-outline-light">Nous contacter</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners Resources Section -->
+<section class="partners-resources-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Ressources des partenaires</h2>
+      <p>Liens vers les ressources de nos partenaires techniques et financiers</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/who.png" alt="OMS" class="partner-logo">
+          <h4>Organisation Mondiale de la Santé</h4>
+          <p>Accédez aux directives, rapports et outils de l'OMS sur le paludisme.</p>
+          <a href="https://www.who.int/fr/health-topics/malaria" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/global-fund.png" alt="Fonds mondial" class="partner-logo">
+          <h4>Fonds mondial</h4>
+          <p>Ressources sur les programmes de lutte contre le paludisme financés par le Fonds mondial.</p>
+          <a href="https://www.theglobalfund.org/fr/malaria/" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/pmi.png" alt="PMI" class="partner-logo">
+          <h4>President's Malaria Initiative</h4>
+          <p>Informations sur les interventions de PMI dans la lutte contre le paludisme.</p>
+          <a href="https://www.pmi.gov/" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/rbm.png" alt="RBM" class="partner-logo">
+          <h4>RBM Partnership to End Malaria</h4>
+          <p>Ressources du partenariat mondial pour l'élimination du paludisme.</p>
+          <a href="https://endmalaria.org/" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/unicef.png" alt="UNICEF" class="partner-logo">
+          <h4>UNICEF</h4>
+          <p>Ressources sur les programmes de l'UNICEF pour la lutte contre le paludisme.</p>
+          <a href="https://www.unicef.org/fr/health/malaria" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="partner-resource-card">
+          <img src="assets/images/partners/msh.png" alt="MSH" class="partner-logo">
+          <h4>Management Sciences for Health</h4>
+          <p>Ressources sur le renforcement des systèmes de santé pour la lutte contre le paludisme.</p>
+          <a href="https://www.msh.org/" target="_blank" class="btn btn-outline-primary">
+            Visiter le site
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

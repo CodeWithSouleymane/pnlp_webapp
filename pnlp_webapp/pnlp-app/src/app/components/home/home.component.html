@@ -1,0 +1,181 @@
+<!-- Hero Section with Carousel -->
+<section class="hero-section">
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      @for (image of sliderImages; track image; let i = $index) {
+        <button type="button" data-bs-target="#heroCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i + 1)"></button>
+      }
+    </div>
+    <div class="carousel-inner">
+      @for (image of sliderImages; track image; let i = $index) {
+        <div class="carousel-item" [class.active]="i === 0">
+          <img [src]="image.src" class="d-block w-100" [alt]="image.alt">
+          <div class="carousel-caption">
+            <h2>{{ image.title }}</h2>
+            <p>{{ image.description }}</p>
+            <button class="btn btn-primary">En savoir plus</button>
+          </div>
+        </div>
+      }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
+<!-- Quick Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row">
+      @for (stat of statistics; track stat) {
+        <div class="col-md-3 col-sm-6">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="bi {{ stat.icon }}"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ stat.value }}</h3>
+              <p>{{ stat.label }}</p>
+              <span class="stat-change" [class.positive]="stat.change.includes('+')" [class.negative]="stat.change.includes('-')">
+                {{ stat.change }}
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- About PNLP Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="about-content">
+          <h2>Programme National de Lutte contre le Paludisme</h2>
+          <p class="lead">Notre mission est d'éliminer le paludisme au Sénégal d'ici 2030.</p>
+          <p>Le Programme National de Lutte contre le Paludisme (PNLP) est chargé de la coordination des activités de lutte contre le paludisme au Sénégal. Il élabore les politiques et stratégies nationales, assure la mobilisation des ressources et le suivi-évaluation des interventions.</p>
+          <div class="mt-4">
+            <a routerLink="/about" class="btn btn-outline-primary">À propos de nous</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="about-image">
+          <img src="assets/images/about-pnlp.jpg" alt="PNLP Team" class="img-fluid rounded">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Latest News Section -->
+<section class="news-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Actualités récentes</h2>
+      <p>Restez informé des dernières actualités et activités du PNLP</p>
+    </div>
+    <div class="row">
+      @for (news of newsItems; track news) {
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="news-card">
+            <div class="news-image">
+              <img [src]="news.image" [alt]="news.title" class="img-fluid">
+              <div class="news-date">{{ news.date }}</div>
+            </div>
+            <div class="news-content">
+              <h4>{{ news.title }}</h4>
+              <p>{{ news.summary }}</p>
+              <a [href]="news.link" class="read-more">Lire la suite <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="text-center mt-4">
+      <a href="#" class="btn btn-outline-primary">Toutes les actualités</a>
+    </div>
+  </div>
+</section>
+
+<!-- Key Resources Section -->
+<section class="resources-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Ressources clés</h2>
+      <p>Accédez aux documents et outils essentiels pour la lutte contre le paludisme</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
+          <h4>Plan Stratégique National</h4>
+          <p>Consultez le Plan Stratégique National de Lutte contre le Paludisme 2021-2025</p>
+          <a href="#" class="btn btn-sm btn-primary">Télécharger</a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h4>Rapports annuels</h4>
+          <p>Accédez aux rapports annuels d'activités du PNLP</p>
+          <a href="#" class="btn btn-sm btn-primary">Consulter</a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="resource-card">
+          <div class="resource-icon">
+            <i class="bi bi-book"></i>
+          </div>
+          <h4>Guides et protocoles</h4>
+          <p>Guides de prise en charge et protocoles de traitement du paludisme</p>
+          <a href="#" class="btn btn-sm btn-primary">Voir tous</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners-section">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2>Nos partenaires</h2>
+      <p>Ensemble pour un Sénégal sans paludisme</p>
+    </div>
+    <div class="partners-slider">
+      <div class="row">
+        @for (partner of partners; track partner) {
+          <div class="col-md-2 col-4 text-center mb-4">
+            <div class="partner-logo">
+              <img [src]="partner.logo" [alt]="partner.name" class="img-fluid">
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content text-center">
+      <h2>Rejoignez la lutte contre le paludisme</h2>
+      <p>Ensemble, nous pouvons éliminer le paludisme au Sénégal. Participez à nos actions de sensibilisation et de prévention.</p>
+      <button class="btn btn-lg btn-primary mt-3">Comment participer</button>
+    </div>
+  </div>
+</section>
