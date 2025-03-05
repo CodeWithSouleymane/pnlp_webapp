@@ -1,59 +1,108 @@
-# PnlpApp
+# PNLP Web Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
+Ce projet est une application web pour le Programme National de Lutte contre le Paludisme (PNLP) du Sénégal, développée avec Angular.
 
-## Development server
+## Aperçu
 
-To start a local development server, run:
+L'application PNLP est conçue pour fournir des informations sur les programmes de lutte contre le paludisme au Sénégal, présenter des statistiques sur la prévalence du paludisme, et offrir des ressources éducatives et des documents importants.
 
-```bash
-ng serve
+## Fonctionnalités
+
+- **Page d'accueil** : Présentation du PNLP, statistiques clés, actualités et partenaires
+- **À propos** : Informations sur la mission, les objectifs, l'équipe et l'historique du PNLP
+- **Statistiques** : Visualisations interactives des données sur le paludisme au Sénégal
+- **Ressources** : Documents, guides et ressources éducatives téléchargeables
+- **Contact** : Formulaire de contact et informations de contact du PNLP
+
+## Technologies utilisées
+
+- Angular 17+
+- TypeScript
+- Bootstrap 5
+- Chart.js pour les visualisations de données
+- Bootstrap Icons
+- Google Maps pour l'intégration de cartes
+
+## Prérequis
+
+- Node.js (v18 ou supérieur)
+- npm (v9 ou supérieur)
+- Angular CLI (v17 ou supérieur)
+
+## Installation
+
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/CodeWithSouleymane/pnlp_webapp.git
+   ```
+
+2. Accédez au répertoire du projet :
+   ```bash
+   cd pnlp_webapp/pnlp-app
+   ```
+
+3. Installez les dépendances :
+   ```bash
+   npm install
+   ```
+
+4. Lancez le serveur de développement :
+   ```bash
+   ng serve
+   ```
+
+5. Ouvrez votre navigateur et accédez à `http://localhost:4200/`
+
+## Structure du projet
+
+```
+pnlp-app/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── home/
+│   │   │   ├── about/
+│   │   │   ├── statistics/
+│   │   │   ├── resources/
+│   │   │   └── contact/
+│   │   ├── app.component.ts
+│   │   ├── app.component.html
+│   │   ├── app.component.scss
+│   │   └── app.routes.ts
+│   ├── assets/
+│   │   ├── images/
+│   │   └── data/
+│   ├── styles.scss
+│   └── index.html
+├── angular.json
+├── package.json
+└── tsconfig.json
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Déploiement
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Pour créer une version de production de l'application :
 
 ```bash
-ng generate component component-name
+ng build --configuration production
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Les fichiers de build seront stockés dans le répertoire `dist/`.
 
-```bash
-ng generate --help
-```
+## Contribution
 
-## Building
+1. Forkez le projet
+2. Créez votre branche de fonctionnalité (`git checkout -b feature/amazing-feature`)
+3. Committez vos changements (`git commit -m 'Add some amazing feature'`)
+4. Poussez vers la branche (`git push origin feature/amazing-feature`)
+5. Ouvrez une Pull Request
 
-To build the project run:
+## Licence
 
-```bash
-ng build
-```
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Contact
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Pour toute question ou suggestion concernant ce projet, veuillez contacter :
+- Email : contact@pnlp.sn
+- Site web : www.pnlp.sn

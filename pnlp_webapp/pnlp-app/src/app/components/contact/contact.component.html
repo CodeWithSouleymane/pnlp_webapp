@@ -1,0 +1,154 @@
+<div class="page-header">
+  <div class="container">
+    <h1>Contactez-nous</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="container section-padding">
+  <div class="row">
+    <div class="col-lg-6 mb-5 mb-lg-0">
+      <h2 class="mb-4">Envoyez-nous un message</h2>
+      <p class="mb-4">Vous avez des questions sur nos programmes de lutte contre le paludisme ou vous souhaitez collaborer avec nous ? N'hésitez pas à nous contacter en utilisant le formulaire ci-dessous.</p>
+      
+      <div class="alert alert-success" *ngIf="formSuccess">
+        Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.
+      </div>
+      
+      <div class="alert alert-danger" *ngIf="formError">
+        Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer plus tard.
+      </div>
+      
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nom complet *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="name" 
+            formControlName="name" 
+            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+          >
+          <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+            <div *ngIf="f['name'].errors['required']">Le nom est requis</div>
+            <div *ngIf="f['name'].errors['minlength']">Le nom doit comporter au moins 2 caractères</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            formControlName="email" 
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          >
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']">L'email est requis</div>
+            <div *ngIf="f['email'].errors['email']">Veuillez entrer une adresse email valide</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="subject" class="form-label">Sujet *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="subject" 
+            formControlName="subject" 
+            [ngClass]="{ 'is-invalid': submitted && f['subject'].errors }"
+          >
+          <div *ngIf="submitted && f['subject'].errors" class="invalid-feedback">
+            <div *ngIf="f['subject'].errors['required']">Le sujet est requis</div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="message" class="form-label">Message *</label>
+          <textarea 
+            class="form-control" 
+            id="message" 
+            rows="5" 
+            formControlName="message" 
+            [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+          ></textarea>
+          <div *ngIf="submitted && f['message'].errors" class="invalid-feedback">
+            <div *ngIf="f['message'].errors['required']">Le message est requis</div>
+            <div *ngIf="f['message'].errors['minlength']">Le message doit comporter au moins 10 caractères</div>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" [disabled]="submitted">
+          <span *ngIf="submitted" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Envoyer le message
+        </button>
+      </form>
+    </div>
+    
+    <div class="col-lg-5 offset-lg-1">
+      <div class="contact-info-card">
+        <h3 class="mb-4">Informations de contact</h3>
+        
+        <div class="contact-item">
+          <i class="bi bi-geo-alt"></i>
+          <div>
+            <h5>Adresse</h5>
+            <p>Fann Résidence, Rue Aimé Césaire, Dakar, Sénégal</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="bi bi-telephone"></i>
+          <div>
+            <h5>Téléphone</h5>
+            <p>+221 33 869 09 61</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="bi bi-envelope"></i>
+          <div>
+            <h5>Email</h5>
+            <p>contact&#64;pnlp.sn</p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <i class="bi bi-clock"></i>
+          <div>
+            <h5>Heures d'ouverture</h5>
+            <p>Lundi - Vendredi: 8h00 - 17h00</p>
+          </div>
+        </div>
+        
+        <div class="social-media mt-4">
+          <h5>Suivez-nous</h5>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="map-section">
+  <div class="container-fluid p-0">
+    <div class="row g-0">
+      <div class="col-12">
+        <div class="map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.0970943304307!2d-17.47291492394567!3d14.709076175798654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xec1725963b4e7c1%3A0xf78e968d7e4dcabb!2sFann%20Residence%2C%20Dakar%2C%20Senegal!5e0!3m2!1sen!2sus!4v1709651823084!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
