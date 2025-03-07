@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block title %}Ticket #{{ ticket.id }} - Shop Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-0 fw-bold text-gray-800">
+                    <i class="fas fa-ticket-alt me-2"></i>Ticket #{{ ticket.id }}
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('tickets') }}" class="text-decoration-none">Tickets</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Ticket #{{ ticket.id }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <a href="{{ url_for('edit_ticket', ticket_id=ticket.id) }}" class="btn btn-primary me-2">
+                    <i class="fas fa-edit me-1"></i> Edit
+                </a>
+                <a href="{{ url_for('delete_ticket', ticket_id=ticket.id) }}" class="btn btn-danger" 
+                   onclick="return confirm('Are you sure you want to delete this ticket?')">
+                    <i class="fas fa-trash-alt me-1"></i> Delete
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Ticket Details -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold">{{ ticket.title }}</h5>
+                <div>
+                    {% if ticket.status == 'open' %}
+                    <span class="badge bg-danger">Open</span>
+                    {% elif ticket.status == 'in_progress' %}
+                    <span class="badge bg-warning text-dark">In Progress</span>
+                    {% else %}
+                    <span class="badge bg-success">Closed</span>
+                    {% endif %}
+                    
+                    {% if ticket.priority == 'high' %}
+                    <span class="badge bg-danger ms-1">High Priority</span>
+                    {% elif ticket.priority == 'medium' %}
+                    <span class="badge bg-warning text-dark ms-1">Medium Priority</span>
+                    {% else %}
+                    <span class="badge bg-info ms-1">Low Priority</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="ticket-description mb-4">
+                    {{ ticket.description|nl2br }}
+                </div>
+                
+                <div class="row ticket-meta">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted">Created by:</span>
+                            <div class="d-flex align-items-center mt-1">
+                                <div class="avatar me-2" style="width: 32px; height: 32px;">
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+                                        {{ ticket.creator.username[0]|upper if ticket.creator else '?' }}
+                                    </div>
+                                </div>
+                                <span>{{ ticket.creator.username if ticket.creator else 'Unknown' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted">Assigned to:</span>
+                            <div class="d-flex align-items-center mt-1">
+                                {% if ticket.assignee %}
+                                <div class="avatar me-2" style="width: 32px; height: 32px;">
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+                                        {{ ticket.assignee.username[0]|upper }}
+                                    </div>
+                                </div>
+                                <span>{{ ticket.assignee.username }}</span>
+                                {% else %}
+                                <span class="text-muted">Unassigned</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted">Created on:</span>
+                            <div class="mt-1">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ ticket.created_at.strftime('%B %d, %Y') }}
+                                <br>
+                                <i class="far fa-clock me-1"></i>
+                                {{ ticket.created_at.strftime('%H:%M') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="text-muted">Last updated:</span>
+                            <div class="mt-1">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ ticket.updated_at.strftime('%B %d, %Y') if ticket.updated_at else ticket.created_at.strftime('%B %d, %Y') }}
+                                <br>
+                                <i class="far fa-clock me-1"></i>
+                                {{ ticket.updated_at.strftime('%H:%M') if ticket.updated_at else ticket.created_at.strftime('%H:%M') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="card shadow">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold">
+                    <i class="far fa-comments me-2"></i>Comments
+                    {% if ticket.comments %}
+                    <span class="badge bg-primary ms-2">{{ ticket.comments|length }}</span>
+                    {% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if ticket.comments %}
+                <div class="comments-list mb-4">
+                    {% for comment in ticket.comments %}
+                    <div class="comment-item mb-3">
+                        <div class="d-flex">
+                            <div class="avatar me-3" style="width: 40px; height: 40px;">
+                                <div class="rounded-circle bg-light text-primary d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+                                    {{ comment.user.username[0]|upper }}
+                                </div>
+                            </div>
+                            <div class="comment-content flex-grow-1">
+                                <div class="comment-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-bold">{{ comment.user.username }}</span>
+                                        {% if comment.user.id == ticket.creator.id %}
+                                        <span class="badge bg-secondary ms-2">Creator</span>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">{{ comment.created_at.strftime('%B %d, %Y at %H:%M') }}</small>
+                                </div>
+                                <div class="comment-body p-3 bg-light rounded mt-2">
+                                    {{ comment.content|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="far fa-comment-dots fa-3x mb-3"></i>
+                    <p>No comments yet</p>
+                </div>
+                {% endif %}
+                
+                <!-- Add Comment Form -->
+                <div class="add-comment-form">
+                    <h6 class="fw-bold mb-3">Add a Comment</h6>
+                    <form method="POST" action="{{ url_for('view_ticket', ticket_id=ticket.id) }}">
+                        <div class="mb-3">
+                            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Type your comment here..." required></textarea>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i> Submit Comment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Ticket Status Card -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold">Status Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="status-timeline">
+                    <div class="status-item d-flex mb-3">
+                        <div class="status-icon me-3">
+                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Created</h6>
+                            <p class="text-muted small mb-0">{{ ticket.created_at.strftime('%B %d, %Y at %H:%M') }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if ticket.status == 'in_progress' or ticket.status == 'closed' %}
+                    <div class="status-item d-flex mb-3">
+                        <div class="status-icon me-3">
+                            <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">In Progress</h6>
+                            <p class="text-muted small mb-0">Ticket is being worked on</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if ticket.status == 'closed' %}
+                    <div class="status-item d-flex">
+                        <div class="status-icon me-3">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Closed</h6>
+                            <p class="text-muted small mb-0">Ticket has been resolved</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if ticket.status != 'closed' %}
+                <div class="mt-4">
+                    <form method="POST" action="{{ url_for('close_ticket', ticket_id=ticket.id) }}" id="closeTicketForm">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-check-circle me-1"></i> Mark as Closed
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Related Tickets -->
+        <div class="card shadow">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold">Related Tickets</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if related_tickets %}
+                <ul class="list-group list-group-flush">
+                    {% for related in related_tickets %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('view_ticket', ticket_id=related.id) }}" class="text-decoration-none">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">#{{ related.id }}</span> {{ related.title|truncate(30) }}
+                                </div>
+                                <span class="badge {% if related.status == 'open' %}bg-danger{% elif related.status == 'in_progress' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                                    {{ related.status }}
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    <p>No related tickets found</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .ticket-description {
+        white-space: pre-line;
+    }
+    
+    .comment-item:not(:last-child):after {
+        content: '';
+        display: block;
+        height: 1px;
+        background-color: #e9ecef;
+        margin: 20px 0;
+    }
+    
+    .status-timeline .status-item:not(:last-child):before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 30px;
+        height: 30px;
+        width: 2px;
+        background-color: #e9ecef;
+    }
+    
+    .status-timeline {
+        position: relative;
+    }
+</style>
+{% endblock %}

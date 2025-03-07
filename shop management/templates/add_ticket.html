@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Ticket - Shop Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-0 fw-bold text-gray-800">
+                    <i class="fas fa-plus-circle me-2"></i>Create New Ticket
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('tickets') }}" class="text-decoration-none">Tickets</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Create Ticket</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-ticket-alt me-2"></i>Ticket Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_ticket') }}">
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold">Title</label>
+                        <input type="text" class="form-control form-control-lg" id="title" name="title" required>
+                        <small class="text-muted">Provide a clear and concise title for the ticket</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
+                        <small class="text-muted">Describe the issue or request in detail</small>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="priority" class="form-label fw-bold">Priority</label>
+                            <select class="form-select" id="priority" name="priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <small class="text-muted">Set the importance level of this ticket</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="assigned_to" class="form-label fw-bold">Assign To</label>
+                            <select class="form-select" id="assigned_to" name="assigned_to">
+                                <option value="">Unassigned</option>
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Person responsible for this ticket</small>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-light mb-4">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Ticket Guidelines</h6>
+                            <ul class="mb-0">
+                                <li>Be specific about the issue you're experiencing</li>
+                                <li>Include any relevant error messages or screenshots</li>
+                                <li>Mention steps to reproduce the issue if applicable</li>
+                                <li>Set appropriate priority based on urgency</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('tickets') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Tickets
+                        </a>
+                        <div>
+                            <button type="reset" class="btn btn-light me-2">
+                                <i class="fas fa-undo me-1"></i> Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Create Ticket
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

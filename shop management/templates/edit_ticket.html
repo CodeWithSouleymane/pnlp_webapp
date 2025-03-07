@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Ticket - Shop Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-0 fw-bold text-gray-800">
+                    <i class="fas fa-edit me-2"></i>Edit Ticket #{{ ticket.id }}
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('tickets') }}" class="text-decoration-none">Tickets</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="text-decoration-none">Ticket #{{ ticket.id }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-ticket-alt me-2"></i>Edit Ticket Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('edit_ticket', ticket_id=ticket.id) }}">
+                    <div class="mb-4">
+                        <label for="title" class="form-label fw-bold">Title</label>
+                        <input type="text" class="form-control form-control-lg" id="title" name="title" value="{{ ticket.title }}" required>
+                        <small class="text-muted">Provide a clear and concise title for the ticket</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="6" required>{{ ticket.description }}</textarea>
+                        <small class="text-muted">Describe the issue or request in detail</small>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="status" class="form-label fw-bold">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="open" {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+                                <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                <option value="closed" {% if ticket.status == 'closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                            <small class="text-muted">Current status of the ticket</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="priority" class="form-label fw-bold">Priority</label>
+                            <select class="form-select" id="priority" name="priority">
+                                <option value="low" {% if ticket.priority == 'low' %}selected{% endif %}>Low</option>
+                                <option value="medium" {% if ticket.priority == 'medium' %}selected{% endif %}>Medium</option>
+                                <option value="high" {% if ticket.priority == 'high' %}selected{% endif %}>High</option>
+                            </select>
+                            <small class="text-muted">Importance level of the ticket</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="assigned_to" class="form-label fw-bold">Assign To</label>
+                            <select class="form-select" id="assigned_to" name="assigned_to">
+                                <option value="">Unassigned</option>
+                                {% for user in users %}
+                                <option value="{{ user.id }}" {% if ticket.assigned_to == user.id %}selected{% endif %}>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Person responsible for this ticket</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3">Ticket Information</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>Created By:</strong> 
+                                            <span class="ms-2">{{ ticket.creator.username if ticket.creator else 'Unknown' }}</span>
+                                        </p>
+                                        <p class="mb-1"><strong>Created On:</strong> 
+                                            <span class="ms-2">{{ ticket.created_at.strftime('%B %d, %Y at %H:%M') }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>Last Updated:</strong> 
+                                            <span class="ms-2">{{ ticket.updated_at.strftime('%B %d, %Y at %H:%M') if ticket.updated_at else 'Not updated yet' }}</span>
+                                        </p>
+                                        <p class="mb-1"><strong>Comments:</strong> 
+                                            <span class="ms-2 badge bg-primary">{{ ticket.comments|length if ticket.comments else 0 }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Ticket
+                        </a>
+                        <div>
+                            <button type="reset" class="btn btn-light me-2">
+                                <i class="fas fa-undo me-1"></i> Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Update Ticket
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enable form validation
+    (function() {
+        'use strict';
+        
+        // Fetch all forms we want to apply validation styles to
+        var forms = document.querySelectorAll('.needs-validation');
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+{% endblock %}

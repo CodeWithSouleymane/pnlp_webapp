@@ -1,0 +1,352 @@
+{% extends 'base.html' %}
+
+{% block title %}User Guide - Shop Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1>User Guide</h1>
+        <p class="lead">Welcome to the Shop Management System! This guide will help you navigate and use all the features of the application.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="list-group sticky-top" style="top: 20px;">
+            <a class="list-group-item list-group-item-action" href="#getting-started">Getting Started</a>
+            <a class="list-group-item list-group-item-action" href="#dashboard">Dashboard</a>
+            <a class="list-group-item list-group-item-action" href="#product-management">Product Management</a>
+            <a class="list-group-item list-group-item-action" href="#ticket-system">Ticket System</a>
+            <a class="list-group-item list-group-item-action" href="#user-management">User Management</a>
+            <a class="list-group-item list-group-item-action" href="#tips-tricks">Tips & Tricks</a>
+            <a class="list-group-item list-group-item-action" href="#faq">FAQ</a>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        <div class="card mb-4" id="getting-started">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Getting Started</h3>
+            </div>
+            <div class="card-body">
+                <h4>Account Creation and Login</h4>
+                <p>To start using the Shop Management System, you need to create an account or log in with existing credentials:</p>
+                <ol>
+                    <li>Click on the <strong>Register</strong> link in the navigation bar</li>
+                    <li>Fill in your username, email, and password</li>
+                    <li>Click the Register button to create your account</li>
+                    <li>Once registered, you can log in using your credentials</li>
+                </ol>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> The first user to register automatically becomes an administrator.
+                </div>
+                
+                <h4>Default Admin Account</h4>
+                <p>The system comes with a default admin account:</p>
+                <ul>
+                    <li><strong>Username:</strong> admin</li>
+                    <li><strong>Password:</strong> admin123</li>
+                </ul>
+                <p>It's recommended to change the default password after your first login.</p>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="dashboard">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Dashboard</h3>
+            </div>
+            <div class="card-body">
+                <p>The dashboard provides a quick overview of your shop's status:</p>
+                
+                <h4>Dashboard Components</h4>
+                <ul>
+                    <li><strong>Product Count:</strong> Total number of products in your inventory</li>
+                    <li><strong>Open Tickets:</strong> Number of support tickets that need attention</li>
+                    <li><strong>Low Stock:</strong> Products with inventory levels below 10 units</li>
+                    <li><strong>Recent Products:</strong> Latest products added to your inventory</li>
+                    <li><strong>Recent Tickets:</strong> Latest support tickets created</li>
+                </ul>
+                
+                <div class="alert alert-success">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Tip:</strong> The dashboard automatically refreshes data when you load the page. Click on any card to navigate to the corresponding section.
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="product-management">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Product Management</h3>
+            </div>
+            <div class="card-body">
+                <h4>Viewing Products</h4>
+                <p>The Products page displays all items in your inventory in a table format. You can:</p>
+                <ul>
+                    <li>Search for products by name using the search box</li>
+                    <li>Filter products by category</li>
+                    <li>Filter products by stock level (low, out of stock, in stock)</li>
+                    <li>View detailed information about a product by clicking the eye icon</li>
+                </ul>
+                
+                <h4>Adding a New Product</h4>
+                <ol>
+                    <li>Click the <strong>Add Product</strong> button on the Products page</li>
+                    <li>Fill in the product details:
+                        <ul>
+                            <li>Name (required)</li>
+                            <li>Category (optional, select from existing or create new)</li>
+                            <li>Price (required)</li>
+                            <li>Stock quantity (required)</li>
+                            <li>Description (optional)</li>
+                            <li>Image URL (optional)</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>Add Product</strong> to save</li>
+                </ol>
+                
+                <h4>Editing a Product</h4>
+                <ol>
+                    <li>Find the product you want to edit in the products table</li>
+                    <li>Click the pencil icon in the Actions column</li>
+                    <li>Update the product details as needed</li>
+                    <li>Click <strong>Update Product</strong> to save changes</li>
+                </ol>
+                
+                <h4>Deleting a Product</h4>
+                <ol>
+                    <li>Find the product you want to delete in the products table</li>
+                    <li>Click the trash icon in the Actions column</li>
+                    <li>Confirm the deletion in the popup dialog</li>
+                </ol>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning:</strong> Deleting a product cannot be undone. Make sure you really want to remove it from your inventory.
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="ticket-system">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Ticket System</h3>
+            </div>
+            <div class="card-body">
+                <h4>Viewing Tickets</h4>
+                <p>The Tickets page shows all support tickets in the system. You can:</p>
+                <ul>
+                    <li>Search for tickets by title</li>
+                    <li>Filter tickets by status (open, in-progress, closed)</li>
+                    <li>Filter tickets by priority (low, medium, high)</li>
+                    <li>View detailed information about a ticket by clicking the eye icon</li>
+                </ul>
+                
+                <h4>Creating a New Ticket</h4>
+                <ol>
+                    <li>Click the <strong>Create Ticket</strong> button on the Tickets page</li>
+                    <li>Fill in the ticket details:
+                        <ul>
+                            <li>Title (required)</li>
+                            <li>Description (required)</li>
+                            <li>Priority (default: medium)</li>
+                            <li>Assign To (optional, select a user or leave unassigned)</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>Create Ticket</strong> to save</li>
+                </ol>
+                
+                <h4>Managing a Ticket</h4>
+                <ol>
+                    <li>Click on a ticket to view its details</li>
+                    <li>Add comments to provide updates or ask questions</li>
+                    <li>Click <strong>Edit</strong> to update the ticket status, priority, or assignment</li>
+                    <li>Close the ticket when the issue is resolved</li>
+                </ol>
+                
+                <h4>Ticket Statuses</h4>
+                <ul>
+                    <li><strong>Open:</strong> New tickets that need attention</li>
+                    <li><strong>In Progress:</strong> Tickets currently being worked on</li>
+                    <li><strong>Closed:</strong> Resolved tickets</li>
+                </ul>
+                
+                <h4>Ticket Priorities</h4>
+                <ul>
+                    <li><strong>Low:</strong> Issues that can be addressed later</li>
+                    <li><strong>Medium:</strong> Standard priority issues</li>
+                    <li><strong>High:</strong> Urgent issues that need immediate attention</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="user-management">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">User Management</h3>
+            </div>
+            <div class="card-body">
+                <h4>User Roles</h4>
+                <p>The system has two types of users:</p>
+                <ul>
+                    <li><strong>Administrators:</strong> Have full access to all features</li>
+                    <li><strong>Regular Users:</strong> Can manage products and tickets but have limited administrative capabilities</li>
+                </ul>
+                
+                <h4>User Profile</h4>
+                <p>To access your profile:</p>
+                <ol>
+                    <li>Click on your username in the top-right corner of the navigation bar</li>
+                    <li>Select <strong>Profile</strong> from the dropdown menu</li>
+                    <li>Here you can update your information and change your password</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="tips-tricks">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Tips & Tricks</h3>
+            </div>
+            <div class="card-body">
+                <h4>Keyboard Shortcuts</h4>
+                <ul>
+                    <li><strong>Alt + D:</strong> Go to Dashboard</li>
+                    <li><strong>Alt + P:</strong> Go to Products</li>
+                    <li><strong>Alt + T:</strong> Go to Tickets</li>
+                    <li><strong>Alt + N:</strong> Create New (Product or Ticket, depending on current page)</li>
+                    <li><strong>Ctrl + F:</strong> Focus on Search Box</li>
+                </ul>
+                
+                <h4>Efficiency Tips</h4>
+                <ul>
+                    <li>Use the search function to quickly find products or tickets</li>
+                    <li>Set up categories for your products to make them easier to organize and find</li>
+                    <li>Regularly check the dashboard for low stock items</li>
+                    <li>Assign tickets to specific team members for better accountability</li>
+                    <li>Use the priority system for tickets to focus on the most important issues first</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mb-4" id="faq">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Frequently Asked Questions</h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                How do I reset my password?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="faqOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>To reset your password, click on your username in the top-right corner, select "Profile," and then click the "Change Password" button. You'll need to enter your current password for security verification.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Can I export product data?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>Yes, you can export product data in CSV format. On the Products page, look for the "Export" button in the top-right corner of the product table.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                How do I know when stock is low?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>The system automatically highlights products with low stock (less than 10 units) in red on the Products page. You can also see a count of low stock items on the Dashboard.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Can I assign multiple users to a ticket?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="faqFour" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>Currently, a ticket can only be assigned to one user at a time. However, multiple users can comment on a ticket to collaborate on resolving the issue.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                Is there a mobile app available?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="faqFive" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>The Shop Management System is a web application that is responsive and works well on mobile devices. Simply access the same URL from your mobile browser.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('.list-group-item').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+                
+                // Update active state
+                document.querySelectorAll('.list-group-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Set active menu item based on scroll position
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            
+            document.querySelectorAll('.card').forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    const id = section.getAttribute('id');
+                    document.querySelectorAll('.list-group-item').forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href') === '#' + id) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
