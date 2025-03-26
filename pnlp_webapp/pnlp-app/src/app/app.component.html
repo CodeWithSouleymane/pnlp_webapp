@@ -1,4 +1,4 @@
-<header class="pnlp-header">
+<header class="pnlp-header" [ngClass]="{'scrolled': isScrolled}">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light">
       <a class="navbar-brand" href="#">
@@ -11,22 +11,29 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+              <i class="bi bi-house-door me-1"></i> Accueil
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/about" routerLinkActive="active">À propos</a>
+            <a class="nav-link" routerLink="/about" routerLinkActive="active">
+              <i class="bi bi-info-circle me-1"></i> À propos
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/statistics" routerLinkActive="active">Statistiques</a>
+            <a class="nav-link" routerLink="/statistics" routerLinkActive="active">
+              <i class="bi bi-graph-up me-1"></i> Statistiques
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/resources" routerLinkActive="active">Ressources</a>
+            <a class="nav-link" routerLink="/resources" routerLinkActive="active">
+              <i class="bi bi-file-earmark-text me-1"></i> Ressources
+            </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-primary text-white ms-3" routerLink="/contact">Nous contacter</a>
+          <li class="nav-item ms-2">
+            <a class="nav-link btn btn-primary text-white" routerLink="/contact">
+              <i class="bi bi-headset me-1"></i> Nous contacter
+            </a>
           </li>
         </ul>
       </div>
@@ -45,20 +52,20 @@
         <h5>À propos du PNLP</h5>
         <p>Le Programme National de Lutte contre le Paludisme (PNLP) est chargé de la coordination des interventions de lutte contre le paludisme au Sénégal.</p>
         <div class="social-icons">
-          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
         </div>
       </div>
       <div class="col-lg-4 mb-4">
         <h5>Liens rapides</h5>
         <ul class="footer-links">
-          <li><a routerLink="/">Accueil</a></li>
-          <li><a routerLink="/about">À propos</a></li>
-          <li><a routerLink="/statistics">Statistiques</a></li>
-          <li><a routerLink="/resources">Ressources</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
+          <li><a routerLink="/"><i class="bi bi-chevron-right me-2"></i>Accueil</a></li>
+          <li><a routerLink="/about"><i class="bi bi-chevron-right me-2"></i>À propos</a></li>
+          <li><a routerLink="/statistics"><i class="bi bi-chevron-right me-2"></i>Statistiques</a></li>
+          <li><a routerLink="/resources"><i class="bi bi-chevron-right me-2"></i>Ressources</a></li>
+          <li><a routerLink="/contact"><i class="bi bi-chevron-right me-2"></i>Contact</a></li>
         </ul>
       </div>
       <div class="col-lg-4 mb-4">
@@ -69,6 +76,11 @@
           <li><i class="bi bi-envelope"></i> contact&#64;pnlp.sn</li>
           <li><i class="bi bi-globe"></i> www.pnlp.sn</li>
         </ul>
+        <div class="mt-4">
+          <a href="#" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-arrow-up-circle me-2"></i>Retour en haut
+          </a>
+        </div>
       </div>
     </div>
     <div class="row mt-4">
